@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         stringArrayList.add("Item 7");
         stringArrayList.add("Item 8");
         stringArrayList.add("Item 9");
+        stringArrayList.add("Item 10");
         stringArrayList.add("Item 11");
         stringArrayList.add("Item 12");
         stringArrayList.add("Item 13");
