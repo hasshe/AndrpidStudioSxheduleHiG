@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         populateRecyclerView();
         enableSwipeToDeleteAndUndo();
 
-
     }
 
     private void populateRecyclerView() {
@@ -45,19 +44,29 @@ public class MainActivity extends AppCompatActivity {
         stringArrayList.add("Item 7");
         stringArrayList.add("Item 8");
         stringArrayList.add("Item 9");
-        stringArrayList.add("Item 10");
+        stringArrayList.add("Item 11");
+        stringArrayList.add("Item 12");
+        stringArrayList.add("Item 13");
+        stringArrayList.add("Item 14");
+        stringArrayList.add("Item 15");
+        stringArrayList.add("Item 16");
+        stringArrayList.add("Item 17");
+        stringArrayList.add("Item 18");
+        stringArrayList.add("Item 19");
+        stringArrayList.add("Item 20");
+        stringArrayList.add("Item 21");
+        stringArrayList.add("Item 22");
+        stringArrayList.add("Item 23");
 
         mAdapter = new RecyclerViewAdapter(stringArrayList);
         recyclerView.setAdapter(mAdapter);
-
-
     }
 
     private void enableSwipeToDeleteAndUndo() {
+
         SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
 
                 final int position = viewHolder.getAdapterPosition();
                 final String item = mAdapter.getData().get(position);
@@ -78,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
 
                 snackbar.setActionTextColor(Color.YELLOW);
                 snackbar.show();
-
             }
         };
 
