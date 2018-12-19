@@ -1,1 +1,1 @@
-# AndroidStudioSxheduleHiG
+# AndroidStudioScheduleHiG
