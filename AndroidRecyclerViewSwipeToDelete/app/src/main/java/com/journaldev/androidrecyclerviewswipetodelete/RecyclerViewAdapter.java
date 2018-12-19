@@ -17,11 +17,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mTitle;
-        RelativeLayout relativeLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-
             mTitle = itemView.findViewById(R.id.txtTitle);
         }
     }
