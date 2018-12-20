@@ -1,98 +1,174 @@
 package com.example.barankazan.kronoxapp;
 
-import android.graphics.Color;
+import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.CalendarView;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import Controllers.*;
 
 public class ScheduleFragment extends Fragment {
+    private ListView scheduleList;
+    private ArrayList<InfoHandler> lecturesOfTheDay;
+    private MyAdapter adapter;
+    private ArrayList<InfoHandler> list;
+    private CalendarView mCalendarView;
+    private String chosenDate;
+    private Calendar date;
+    private SimpleDateFormat sdf;
+    private ICalParser parser;
 
-    RecyclerView recyclerView;
-    RecyclerViewAdapter mAdapter;
-    ArrayList<String> stringArrayList = new ArrayList<>();
-    CoordinatorLayout coordinatorLayout;
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_schedule, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View mView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        recyclerView = v.findViewById(R.id.recyclerView);
-        coordinatorLayout = v.findViewById(R.id.coordinatorLayout);
+        initItems();
 
-        populateRecyclerView();
-        enableSwipeToDeleteAndUndo();
+        scheduleList = (ListView) mView.findViewById(R.id.schedule_list);
+        mCalendarView = (CalendarView) mView.findViewById(R.id.calendarView);
+        mCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
 
-        return v;
-    }
+        setAdapter();
+        scheduleList.setAdapter(adapter);
 
-    private void populateRecyclerView() {
-        stringArrayList.add("Item 1");
-        stringArrayList.add("Item 2");
-        stringArrayList.add("Item 3");
-        stringArrayList.add("Item 4");
-        stringArrayList.add("Item 5");
-        stringArrayList.add("Item 6");
-        stringArrayList.add("Item 7");
-        stringArrayList.add("Item 8");
-        stringArrayList.add("Item 9");
-        stringArrayList.add("Item 11");
-        stringArrayList.add("Item 12");
-        stringArrayList.add("Item 13");
-        stringArrayList.add("Item 14");
-        stringArrayList.add("Item 15");
-        stringArrayList.add("Item 16");
-        stringArrayList.add("Item 17");
-        stringArrayList.add("Item 18");
-        stringArrayList.add("Item 19");
-        stringArrayList.add("Item 20");
-        stringArrayList.add("Item 21");
-        stringArrayList.add("Item 22");
-        stringArrayList.add("Item 23");
-
-        mAdapter = new RecyclerViewAdapter(stringArrayList);
-        recyclerView.setAdapter(mAdapter);
-    }
-
-    private void enableSwipeToDeleteAndUndo() {
-
-        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(getActivity()) {
+        mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
 
-                final int position = viewHolder.getAdapterPosition();
-                final String item = mAdapter.getData().get(position);
-
-                mAdapter.removeItem(position);
-
-
-                Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, "Item was removed from the list.", Snackbar.LENGTH_LONG);
-                snackbar.setAction("UNDO", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        mAdapter.restoreItem(item, position);
-                        recyclerView.scrollToPosition(position);
+                /*
+                * Koden nedanför ser till så att kalenderns datum skrivs till chosenDate
+                * i rätt format, för att kunna matchas med schemats datum.
+                */
+                if(month >= 0 || month <= 13) {
+                    month++;
+                    if (month > 9 && dayOfMonth <= 9) {
+                        chosenDate = "" + year + month + "0" + dayOfMonth;
+                    } else if (month <= 9 && dayOfMonth > 9) {
+                        chosenDate = "" + year + "0" + month + dayOfMonth;
+                    } else {
+                        chosenDate = "" + year + month + dayOfMonth;
                     }
-                });
+                }
 
-                snackbar.setActionTextColor(Color.YELLOW);
-                snackbar.show();
+                getTodaysLectures();
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
             }
         };
 
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
-        itemTouchhelper.attachToRecyclerView(recyclerView);
+        scheduleList.setOnItemClickListener(clickListener);
+
+        return mView;
+    }
+
+    /**
+     * getTodaysLectures() tar de lektioner som matchar det valda datumet hos kalendern och lägger
+     * in dom i lecturesOfTheDay-listan.
+     */
+    public void getTodaysLectures() {
+        lecturesOfTheDay.clear();
+        for(InfoHandler info : list) {
+            if(chosenDate.equals(info.getDate())) {
+                lecturesOfTheDay.add(info);
+            }
+        }
+    }
+
+    /**
+     * setList() hämtar en lista med informationen som kommer från ICAL-filen, ifrån ICalParsern.
+     */
+    public void setList() {
+        list.clear();
+        list.addAll(parser.getInfoList());
+    }
+
+    public void initItems() {
+        parser = new ICalParser();
+        parser.parseICS();
+
+
+        sdf = new SimpleDateFormat("yyyyMMdd");
+        date = Calendar.getInstance();
+        chosenDate = sdf.format(date.getTime());
+        list = new ArrayList<>();
+
+        setList();
+        lecturesOfTheDay = new ArrayList<>();
+        getTodaysLectures();
+    }
+
+    public void setAdapter() {
+        adapter = new MyAdapter();
+    }
+
+    /**
+     * MyAdapter ändrar så att listan ser ut som den gör, istället för att se ut som en vanlig lista.
+     */
+    class MyAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return lecturesOfTheDay.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View view, ViewGroup parent) {
+            ViewHolder viewHolder;
+            if(view == null) {
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                view = inflater.inflate(R.layout.schedule_list_style, parent, false);
+                viewHolder = new ViewHolder(view);
+                view.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) view.getTag();
+            }
+
+            viewHolder.startTime.setText(lecturesOfTheDay.get(position).getStartTime());
+            viewHolder.stopTime.setText(lecturesOfTheDay.get(position).getStopTime());
+            //Ändra till .getCourseName() när det är fixat.
+            viewHolder.courseName.setText(lecturesOfTheDay.get(position).getCourseCode());
+            viewHolder.roomNr.setText(lecturesOfTheDay.get(position).getRoomNr());
+            viewHolder.teacherSignature.setText(lecturesOfTheDay.get(position).getTeacherSignature());
+            return view;
+        }
+
+        private class ViewHolder {
+            TextView startTime, stopTime, courseName, roomNr, teacherSignature;
+
+            public ViewHolder(View view) {
+                startTime = (TextView) view.findViewById(R.id.start_time);
+                stopTime = (TextView) view.findViewById(R.id.stop_time);
+                courseName = (TextView) view.findViewById(R.id.course_name);
+                roomNr = (TextView) view.findViewById(R.id.room);
+                teacherSignature = (TextView) view.findViewById(R.id.teacher);
+            }
+        }
     }
 }
