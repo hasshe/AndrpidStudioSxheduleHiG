@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import Fragments.*;
 
 /**
  * Loading screen som körs i 2 sekunder för att schemat ska hinna laddas ner.

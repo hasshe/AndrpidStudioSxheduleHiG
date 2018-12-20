@@ -1,4 +1,4 @@
-package com.example.barankazan.kronoxapp;
+package Fragments;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -11,6 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.barankazan.kronoxapp.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -2,7 +2,7 @@ package com.example.barankazan.kronoxapp;
 
 import android.text.Html;
 import android.util.Log;
-
+import Fragments.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

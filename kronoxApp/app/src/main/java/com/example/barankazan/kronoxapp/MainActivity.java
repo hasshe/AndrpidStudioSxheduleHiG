@@ -11,6 +11,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import Fragments.FavoriteFragment;
+import Fragments.HomeFragment;
+import Fragments.SearchFragment;
+import Fragments.SettingsFragment;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
 

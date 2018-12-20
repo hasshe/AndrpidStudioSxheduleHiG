@@ -1,7 +1,5 @@
-package com.example.barankazan.kronoxapp;
+package Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,27 +10,29 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class loginFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+import com.example.barankazan.kronoxapp.R;
+
+public class HomeFragment extends Fragment {
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_login, container, false);
-        Button btn = v.findViewById(R.id.login2);
+        View v = inflater.inflate(R.layout.fragment_home, container, false);
+        Button btn = v.findViewById(R.id.login);
         btn.setOnClickListener(new View.OnClickListener () {
             @Override
             public void onClick(View v) {
                 Toast toast = Toast.makeText(getActivity(),
-                        "Login Success", Toast.LENGTH_SHORT);
+                        "Unavailable", Toast.LENGTH_SHORT);
                 toast.show();
-                HomeFragment h= new HomeFragment();
+                loginFragment f= new loginFragment();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, h, "findThisFragment")
+                        .replace(R.id.fragment_container, f, "findThisFragment")
                         .addToBackStack(null)
                         .commit();
             }
-        });
+            });
         return v;
     }
+
 }
