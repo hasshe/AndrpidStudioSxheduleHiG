@@ -2,7 +2,7 @@ package com.example.barankazan.kronoxapp;
 
 import android.text.Html;
 import android.util.Log;
-import Fragments.*;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,16 +20,19 @@ import java.util.List;
 public class SuggestProgram implements Runnable {
     private static final String TAG = "SuggestProgram";
     private final SearchActivity suggest;
-    private final String searchText;
+    private final String searchBarData;
+    private static final String SIGN_TYP = "signatur";
+    private static final String PROGRAM_TYP = "program";
 
-    SuggestProgram(SearchActivity context, String searchText) {
+
+    SuggestProgram(SearchActivity context, String searchBarData) {
         this.suggest = context;
-        this.searchText = searchText;
+        this.searchBarData = searchBarData;
     }
 
     @Override
     public void run() {
-        List<String> suggestions = doSuggest(searchText);
+        List<String> suggestions = doSuggest(searchBarData, null);
         suggest.setSuggestions(suggestions);
     }
 
@@ -38,7 +41,14 @@ public class SuggestProgram implements Runnable {
      * @param original
      * @return
      */
-    private List<String> doSuggest(String original) {
+    private List<String> doSuggest(String original, String typ) {
+        int is = 2;
+        if(is == 1) {
+            typ = SIGN_TYP;
+        }
+        else {
+            typ = PROGRAM_TYP;
+        }
         List<String> messages = new LinkedList<String>();
         String error = null;
 
@@ -50,7 +60,7 @@ public class SuggestProgram implements Runnable {
 
             String q = URLEncoder.encode(original, "UTF-8");
             URL url = new URL(
-                    "https://kronox.hig.se/ajax/ajax_autocompleteResurser.jsp?typ=program&term="
+                    "https://kronox.hig.se/ajax/ajax_autocompleteResurser.jsp?typ=" + typ + "&term="
                             + q);
             InputStream in = url.openStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(in));

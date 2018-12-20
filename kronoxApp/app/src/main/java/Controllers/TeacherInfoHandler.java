@@ -1,14 +1,11 @@
 package Controllers;
 
-public class InfoHandler{
-    private String courseCode, programCode, lectureInfo, start, stop,
-            startDate, startTime, stopTime, roomNr, teacherSignature, secondTeacherSignature;
+public class TeacherInfoHandler {
+    private String lectureInfo, start, stop, startDate, startTime, stopTime, roomNr, teacherSignature;
 
-    public void setCourseCode(String courseCode) { this.courseCode = courseCode; }
-    public void setProgramCode(String programCode) { this.programCode = programCode; }
+
     public void setLectureInfo(String lectureInfo) { this.lectureInfo = lectureInfo; }
     public void setRoomNr(String roomNr) { this.roomNr = roomNr; }
-    public void setSecondTeacherSignature(String secondTeacherSignature) { this.secondTeacherSignature = secondTeacherSignature; }
     public void setTeacherSignature(String teacherSignature) { this.teacherSignature = teacherSignature; }
     public void setDate() { startDate = start.substring(0, start.lastIndexOf("T")); }
 
@@ -22,11 +19,6 @@ public class InfoHandler{
         this.stop = stop;
         setStopTime();
     }
-
-    /**
-     * Tar de relevanta delarna ifrån "DTSTART"-biten i schemat och
-     * lägger till ett kolon för att separera timme och minut.
-     */
     public void setStartTime() {
         int firstPart = Integer.parseInt(start.substring(start.lastIndexOf("T") + 1, start.lastIndexOf("Z")-4)) + 1;
         startTime = firstPart + ":" + start.substring(start.lastIndexOf("T") + 3, start.lastIndexOf("Z")-2);
@@ -44,9 +36,9 @@ public class InfoHandler{
     public String getDate() { return startDate; }
     public String getStartTime() { return startTime; }
     public String getStopTime() { return stopTime; }
-    public String getCourseCode() { return courseCode; }
     public String getStart() { return start; }
     public String getRoomNr() { return roomNr; }
-    public String getTeacherSignature() { return teacherSignature + " " + secondTeacherSignature; }
+    public String getTeacherSignature() { return teacherSignature; }
 
 }
+

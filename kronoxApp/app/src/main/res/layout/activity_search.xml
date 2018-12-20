@@ -10,7 +10,7 @@
         android:id="@+id/logoImg"
         android:layout_width="154dp"
         android:layout_height="147dp"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         app:srcCompat="@drawable/higlogo" />
 
     <LinearLayout
@@ -23,7 +23,7 @@
             android:id="@+id/search"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="Ange sökord"
+            android:hint="Search..."
             android:inputType="textNoSuggestions"
             android:padding="10dip"
             android:textSize="18sp" />
@@ -32,7 +32,7 @@
             android:id="@+id/suggestion_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Förslag:"/>
+            android:text="Results::" />
 
         <ListView
             android:id="@+id/suggestion_list"

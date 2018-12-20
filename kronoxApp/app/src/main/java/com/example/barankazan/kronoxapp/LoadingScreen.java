@@ -7,10 +7,6 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import Fragments.*;
 
-/**
- * Loading screen som körs i 2 sekunder för att schemat ska hinna laddas ner.
- */
-
 public class LoadingScreen extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,12 +18,10 @@ public class LoadingScreen extends AppCompatActivity {
             public void run() {
                 goToSchedule();
             }
-        }, 2000);
+        }, 1500);
 
 
     }
-
-
     public void goToSchedule() {
         Intent intent = new Intent(LoadingScreen.this, ScheduleActivity.class);
         startActivity(intent);

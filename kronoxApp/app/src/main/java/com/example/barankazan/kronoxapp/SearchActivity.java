@@ -62,7 +62,6 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.e("Request Code", "" + requestCode);
         if (requestCode == REQUEST_CODE_PERMISSION) {
             if (grantResults.length == 4 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED &&
@@ -95,6 +94,7 @@ public class SearchActivity extends AppCompatActivity {
 
     public String generateURL() {
         String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
+        //ändra P till S för att få schema till lärare
         scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p." + programCode;
 
         return scheduleURL;
