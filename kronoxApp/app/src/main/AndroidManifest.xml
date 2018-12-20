@@ -11,7 +11,8 @@
         android:theme="@style/ApDef.NoActionBar">
 
         <activity android:name=".MainActivity"
-            android:theme="@style/Dark.Theme">
+            android:theme="@style/Dark.Theme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
