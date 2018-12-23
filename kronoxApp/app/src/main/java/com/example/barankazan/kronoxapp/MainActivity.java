@@ -1,5 +1,6 @@
 package com.example.barankazan.kronoxapp;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,7 +11,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.barankazan.kronoxapp.Schedule.ScheduleFragment;
+import Fragments.FavoriteFragment;
+import Fragments.HomeFragment;
+import Fragments.SearchFragment;
+import Fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
@@ -51,11 +55,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .commit();
                 break;
             case R.id.nav_search:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment())
-                        .commit();
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment())
+                        //.commit();
                 break;
             case R.id.nav_schedules:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ScheduleFragment())
+                //ändra
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment())
                         .commit();
                 break;
             case R.id.nav_favorite:
