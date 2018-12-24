@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.example.barankazan.kronoxapp.Schedule.ScheduleFragment;
+
 import Fragments.FavoriteFragment;
 import Fragments.HomeFragment;
 import Fragments.SearchFragment;
@@ -61,8 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         //.commit();
                 break;
             case R.id.nav_schedules:
-                //ändra
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment())
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ScheduleFragment())
                         .commit();
                 break;
             case R.id.nav_favorite:

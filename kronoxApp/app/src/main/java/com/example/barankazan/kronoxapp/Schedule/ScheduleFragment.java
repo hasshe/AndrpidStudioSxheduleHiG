@@ -31,7 +31,7 @@ public class ScheduleFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_schedule, container, false);
+        View v = inflater.inflate(R.layout.fragment_saved_schedule, container, false);
 
         DatabaseHelper DatabaseHelper = new DatabaseHelper(getActivity());
         mDatabase = DatabaseHelper.getWritableDatabase();
