@@ -27,7 +27,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
-import Fragments.*;
 
 public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -86,7 +85,9 @@ public class SearchActivity extends AppCompatActivity {
 
                 ActivityCompat.requestPermissions(this,
                         mPermission, REQUEST_CODE_PERMISSION);
-            } else { /*Keep going*/ }
+            } else {
+                /*Keep going*/
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -94,7 +95,7 @@ public class SearchActivity extends AppCompatActivity {
 
     public String generateURL() {
         String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
-        //ändra P till S för att få schema till lärare
+        //ändra P till S. för att få schema till lärare
         scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p." + programCode;
 
         return scheduleURL;
@@ -187,7 +188,7 @@ public class SearchActivity extends AppCompatActivity {
                     setText(R.string.loading_text);
 
                     try {
-                        SuggestProgram suggestTask = new SuggestProgram(SearchActivity.this, original);
+                        SearchSuggestions suggestTask = new SearchSuggestions(SearchActivity.this, original);
                         suggestionPending = suggestionThread.submit(suggestTask);
                     } catch (RejectedExecutionException e) {
                         setText(R.string.error_text);

@@ -35,9 +35,8 @@ public class ScheduleFragment extends Fragment {
         View mView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
         initItems();
-
-        scheduleList = (ListView) mView.findViewById(R.id.schedule_list);
-        mCalendarView = (CalendarView) mView.findViewById(R.id.calendarView);
+        scheduleList = mView.findViewById(R.id.schedule_list);
+        mCalendarView = mView.findViewById(R.id.calendarView);
         mCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
 
         setAdapter();
@@ -116,26 +115,31 @@ public class ScheduleFragment extends Fragment {
     }
 
     public void setAdapter() {
+
         adapter = new MyAdapter();
     }
 
     /**
      * MyAdapter ändrar så att listan ser ut som den gör, istället för att se ut som en vanlig lista.
      */
+
     class MyAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
+
             return lecturesOfTheDay.size();
         }
 
         @Override
         public Object getItem(int position) {
+
             return null;
         }
 
         @Override
         public long getItemId(int position) {
+
             return 0;
         }
 
@@ -158,11 +162,13 @@ public class ScheduleFragment extends Fragment {
             viewHolder.courseName.setText(lecturesOfTheDay.get(position).getCourseCode());
             viewHolder.roomNr.setText(lecturesOfTheDay.get(position).getRoomNr());
             viewHolder.teacherSignature.setText(lecturesOfTheDay.get(position).getTeacherSignature());
+            viewHolder.teacherSignature.setText(lecturesOfTheDay.get(position).getTeacherSignature());
+            viewHolder.moment.setText(lecturesOfTheDay.get(position).getLectureMoment());
             return view;
         }
 
         private class ViewHolder {
-            TextView startTime, stopTime, courseName, roomNr, teacherSignature;
+            TextView startTime, stopTime, courseName, roomNr, teacherSignature, moment;
 
             public ViewHolder(View view) {
                 startTime = (TextView) view.findViewById(R.id.start_time);
@@ -170,6 +176,7 @@ public class ScheduleFragment extends Fragment {
                 courseName = (TextView) view.findViewById(R.id.course_name);
                 roomNr = (TextView) view.findViewById(R.id.room);
                 teacherSignature = (TextView) view.findViewById(R.id.teacher);
+                moment = (TextView) view.findViewById(R.id.moment);
             }
         }
     }

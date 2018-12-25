@@ -20,31 +20,33 @@ public class ICalParser {
     public static ArrayList<InfoHandler> info;
     private String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
     private InfoHandler infoHandler;
-    private BufferedReader br;
-    private FileInputStream fis;
+    private BufferedReader bufferRead;
+    private FileInputStream fileReadi;
 
     public void parseICS(){
         info = new ArrayList<InfoHandler>();
         try {
-            fis = new FileInputStream(new File(path, "/temp/SC1444.ics"));
-            InputStreamReader isr = new InputStreamReader(fis);
-            br = new BufferedReader(isr);
+            fileReadi = new FileInputStream(new File(path, "/temp/SC1444.ics"));
+            InputStreamReader inputStreamRead = new InputStreamReader(fileReadi);
+            bufferRead = new BufferedReader(inputStreamRead);
 
-            String s;
+            String scheduleCalData;
             infoHandler = new InfoHandler();
-            while((s = br.readLine()) != null) {
-                if(s.contains("DTSTART:")) infoHandler.setStart(s.substring(s.lastIndexOf(":") + 1));
-                if(s.contains("DTEND:")) infoHandler.setStop(s.substring(s.lastIndexOf(":") + 1));
+            while((scheduleCalData = bufferRead.readLine()) != null) {
+                if(scheduleCalData.contains("DTSTART:"))
+                    infoHandler.setStart(scheduleCalData.substring(scheduleCalData.lastIndexOf(":") + 1));
+                if(scheduleCalData.contains("DTEND:"))
+                    infoHandler.setStop(scheduleCalData.substring(scheduleCalData.lastIndexOf(":") + 1));
 
-                if(s.contains("SUMMARY:Program:")){
-                    String[] holder = s.split(" ");
+                if(scheduleCalData.contains("SUMMARY:Program:")) {
+                    String[] holder = scheduleCalData.split(" ");
                     infoHandler.setProgramCode(holder[1]);
-                    for(int i = 2; i < holder.length; i++) {
-                        switch(holder[i]) {
+                    for (int i = 2; i < holder.length; i++) {
+                        switch (holder[i]) {
                             case "Kurs.grp:":
-                                infoHandler.setCourseCode(holder[i+1].substring(0, holder[i+1].lastIndexOf("-")));
+                                infoHandler.setCourseCode(holder[i + 1].substring(0, holder[i + 1].lastIndexOf("-")));
                             case "Sign:":
-                                infoHandler.setTeacherSignature(holder[i+1]);
+                                infoHandler.setTeacherSignature(holder[i + 1]);
                                 if(!holder[i+2].equals("Moment:")) infoHandler.setSecondTeacherSignature(holder[i+2]);
                                 else infoHandler.setSecondTeacherSignature("");
                             case "Moment:":
@@ -57,11 +59,12 @@ public class ICalParser {
                         }
                     }
                 }
-                if(s.contains("LOCATION:")) {
-                    infoHandler.setRoomNr(s.substring(s.lastIndexOf(":")+1));
+
+                if(scheduleCalData.contains("LOCATION:")) {
+                    infoHandler.setRoomNr(scheduleCalData.substring(scheduleCalData.lastIndexOf(":")+1));
                 }
 
-                if(s.equals("END:VEVENT") && infoHandler != null) {
+                if(scheduleCalData.equals("END:VEVENT") && infoHandler != null) {
                     info.add(infoHandler);
                     infoHandler = new InfoHandler();
                 }
@@ -78,3 +81,4 @@ public class ICalParser {
         return info;
     }
 }
+
