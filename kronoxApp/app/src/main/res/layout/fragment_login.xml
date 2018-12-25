@@ -27,14 +27,15 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Username" />
+            android:hint="Username" />
 
         <EditText
             android:id="@+id/editText3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="numberPassword" />
+            android:inputType="numberPassword"
+            android:hint="Password"/>
 
         <Button
             android:id="@+id/login2"
