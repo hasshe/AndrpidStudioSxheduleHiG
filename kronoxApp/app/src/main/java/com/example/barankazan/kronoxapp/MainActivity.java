@@ -13,10 +13,7 @@ import android.view.MenuItem;
 
 import com.example.barankazan.kronoxapp.Schedule.ScheduleFragment;
 
-import Fragments.FavoriteFragment;
 import Fragments.HomeFragment;
-import Fragments.SearchFragment;
-import Fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
@@ -51,28 +48,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
+        Intent intent;
+
         switch(menuItem.getItemId()){
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment())
                         .commit();
                 break;
-            case R.id.nav_search:
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+            case R.id.nav_search_schedule:
+                intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
                 //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment())
                         //.commit();
+                break;
+            case R.id.nav_search_teacher:
+                //Gör ingeting.
                 break;
             case R.id.nav_schedules:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ScheduleFragment())
                         .commit();
                 break;
-            case R.id.nav_favorite:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FavoriteFragment())
-                        .commit();
-                break;
             case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment())
-                        .commit();
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
                 break;
         }
 
