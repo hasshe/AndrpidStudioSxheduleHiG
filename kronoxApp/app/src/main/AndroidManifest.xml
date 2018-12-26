@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
 
     <application
@@ -15,19 +15,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/ApDef">
-        <activity android:name=".SearchActivity"
+        <activity
+            android:name=".SearchActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ApDef">
-        </activity>
-        <activity android:name=".ScheduleActivity"
+            android:theme="@style/ApDef"></activity>
+        <activity
+            android:name=".ScheduleActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ApDef">
-        </activity>
-        <activity android:name=".LoadingScreen"
+            android:theme="@style/ApDef"></activity>
+        <activity
+            android:name=".LoadingScreen"
             android:screenOrientation="portrait"
-            android:theme="@style/ApDef">
-        </activity>
+            android:theme="@style/ApDef"></activity>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
@@ -38,6 +38,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>
