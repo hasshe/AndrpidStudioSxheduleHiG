@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/cyan_500</color>
+    <color name="colorPrimaryDark">@color/cyan_700</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="window_background">#FFF5F5F5</color>
+
+    <color name="cyan_050">#e0f7fa</color> <!-- Use with black text -->
+    <color name="cyan_100">#b2ebf2</color> <!-- Use with black text -->
+    <color name="cyan_200">#80deea</color> <!-- Use with black text -->
+    <color name="cyan_300">#4dd0e1</color> <!-- Use with black text -->
+    <color name="cyan_400">#26c6da</color> <!-- Use with black text -->
+    <color name="cyan_500">#00bcd4</color> <!-- Use with white text -->
+    <color name="cyan_600">#00acc1</color> <!-- Use with white text -->
+    <color name="cyan_700">#0097a7</color> <!-- Use with white text -->
+    <color name="cyan_800">#00838f</color> <!-- Use with white text -->
+    <color name="cyan_900">#006064</color> <!-- Use with white text -->
+    <color name="cyan_a100">#84ffff</color> <!-- Use with black text -->
+    <color name="cyan_a200">#18ffff</color> <!-- Use with black text -->
+    <color name="cyan_a400">#00e5ff</color> <!-- Use with black text -->
+    <color name="cyan_a700">#00b8d4</color> <!-- Use with black text -->
+
+
+</resources>

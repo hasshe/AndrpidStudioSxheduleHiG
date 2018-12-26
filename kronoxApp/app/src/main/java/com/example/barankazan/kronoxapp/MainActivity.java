@@ -59,8 +59,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_search:
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment())
-                        //.commit();
                 break;
             case R.id.nav_schedules:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ScheduleFragment())
