@@ -1,10 +1,11 @@
-package Controllers;
+package Parser;
 
-public class InfoHandler{
+public class ScheduleInfo {
     private String courseCode, programCode, lectureInfo, start, stop, date,
             startDate, startTime, stopTime, roomNr, teacherSignature, secondTeacherSignature;
 
     public void setCourseCode(String courseCode) {
+
         this.courseCode = courseCode;
     }
     public void setProgramCode(String programCode) {

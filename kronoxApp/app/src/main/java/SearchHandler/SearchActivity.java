@@ -1,4 +1,4 @@
-package com.example.barankazan.kronoxapp;
+package SearchHandler;
 
 import android.Manifest;
 import android.app.DownloadManager;
@@ -13,12 +13,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+
+import com.example.barankazan.kronoxapp.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,7 +29,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.RejectedExecutionException;
+
+import Navigation.LoadingScreen;
 
 public class SearchActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_PERMISSION = 1;
@@ -42,9 +46,14 @@ public class SearchActivity extends AppCompatActivity {
     private List<String> items;
     private ArrayAdapter<String> adapter;
     private DownloadManager downloadManager;
+    private SearchSuggestions suggestions;
 
     private String startDate = "idag";
     private String programCode = "";
+
+    private RadioButton progToggle, teachToggle;
+    private RadioGroup grpRadio;
+    public int toggle = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,17 +98,51 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public String generateURL() {
-        String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
-        scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p." + programCode;
+        if(toggle == 1) {
+            String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
+            scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p." + programCode;
+            return scheduleURL;
+        }
+        else if(toggle == 2) {
+            String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
+            scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=s." + programCode;
+            return scheduleURL;
+        }
+        else if(toggle == 3) {
+            String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
+            scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=k." + programCode;
+            return scheduleURL;
+        }
+         return null;
+    }
 
-        return scheduleURL;
+    public void onRadioClick(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch(view.getId()) {
+            case R.id.programToggle:
+                if (checked) {
+                    toggle = 1;
+                    break;
+                }
+            case R.id.teacherToggle:
+                if (checked) {
+                    toggle = 2;
+                    break;
+                }
+            case R.id.courseToggle:
+                if (checked) {
+                    toggle = 3;
+                    break;
+                }
+        }
     }
 
     public void downloadSchedule() {
         Uri calURI = Uri.parse(generateURL());
-
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        File file = new File(path + "/temp/SC1444.ics");
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-
+        file.delete();
         DownloadManager.Request request = new DownloadManager.Request(calURI);
         request.setTitle("SC1444");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
@@ -177,13 +220,10 @@ public class SearchActivity extends AppCompatActivity {
 
                 if (original.length() != 0) {
                     setText(R.string.loading_text);
+                    SearchSuggestions suggestTask = new SearchSuggestions(SearchActivity.this, original);
+                    suggestionPending = suggestionThread.submit(suggestTask);
 
-                    try {
-                        SearchSuggestions suggestTask = new SearchSuggestions(SearchActivity.this, original);
-                        suggestionPending = suggestionThread.submit(suggestTask);
-                    } catch (RejectedExecutionException e) {
-                        setText(R.string.error_text);
-                    }
+
                 }
             }
         };

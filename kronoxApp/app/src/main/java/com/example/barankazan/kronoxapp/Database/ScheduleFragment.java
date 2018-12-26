@@ -1,25 +1,19 @@
-package com.example.barankazan.kronoxapp.Schedule;
+package com.example.barankazan.kronoxapp.Database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.barankazan.kronoxapp.R;
-
-import java.util.ArrayList;
 
 public class ScheduleFragment extends Fragment {
 

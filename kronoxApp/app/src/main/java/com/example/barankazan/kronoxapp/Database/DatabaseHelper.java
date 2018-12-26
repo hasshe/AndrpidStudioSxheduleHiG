@@ -1,4 +1,4 @@
-package com.example.barankazan.kronoxapp.Schedule;
+package com.example.barankazan.kronoxapp.Database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

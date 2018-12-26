@@ -16,8 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/ApDef">
         <activity
-            android:name=".SearchActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="SearchHandler.SearchActivity"
+            android:parentActivityName="Navigation.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ApDef"></activity>
         <activity
@@ -25,11 +25,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/ApDef"></activity>
         <activity
-            android:name=".LoadingScreen"
+            android:name="Navigation.LoadingScreen"
             android:screenOrientation="portrait"
             android:theme="@style/ApDef"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name="Navigation.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Dark.Theme">
             <intent-filter>
@@ -40,7 +40,8 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings"
+            android:theme="@style/ApDef"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.barankazan.kronoxapp.Schedule;
+package com.example.barankazan.kronoxapp.Database;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,8 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.barankazan.kronoxapp.R;
-
-import java.util.ArrayList;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 

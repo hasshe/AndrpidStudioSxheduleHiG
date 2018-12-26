@@ -16,17 +16,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import Controllers.ICalParser;
-import Controllers.InfoHandler;
+import Parser.ICalDataParser;
+import Parser.ScheduleInfo;
 
 public class ScheduleFragment extends Fragment {
     private ListView scheduleList;
-    private ArrayList<InfoHandler> lecturesOfTheDay;
+    private ArrayList<ScheduleInfo> lecturesOfTheDay;
     private MyAdapter adapter;
-    private ArrayList<InfoHandler> list;
+    private ArrayList<ScheduleInfo> list;
     private Calendar date;
     private SimpleDateFormat sdf;
-    private ICalParser parser;
+    private ICalDataParser parser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class ScheduleFragment extends Fragment {
      */
     public void getTodaysLectures() {
         lecturesOfTheDay.clear();
-        for(InfoHandler info : list) {
+        for(ScheduleInfo info : list) {
             lecturesOfTheDay.add(info);
 
         }
@@ -63,7 +63,7 @@ public class ScheduleFragment extends Fragment {
     }
 
     public void initItems() {
-        parser = new ICalParser();
+        parser = new ICalDataParser();
         parser.parseICS();
 
         sdf = new SimpleDateFormat("yyyyMMdd");

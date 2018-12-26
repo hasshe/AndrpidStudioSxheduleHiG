@@ -1,4 +1,4 @@
-package com.example.barankazan.kronoxapp;
+package Navigation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.barankazan.kronoxapp.Schedule.ScheduleFragment;
+import com.example.barankazan.kronoxapp.Database.ScheduleFragment;
+import com.example.barankazan.kronoxapp.R;
+import SearchHandler.SearchActivity;
+import com.example.barankazan.kronoxapp.SettingsActivity;
 
 import Fragments.HomeFragment;
 
@@ -58,11 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_search_schedule:
                 intent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent);
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SearchFragment())
-                        //.commit();
-                break;
-            case R.id.nav_search_teacher:
-                //Gör ingeting.
+
                 break;
             case R.id.nav_schedules:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ScheduleFragment())

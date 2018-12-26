@@ -1,11 +1,13 @@
-package com.example.barankazan.kronoxapp;
+package Navigation;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import Fragments.*;
+
+import com.example.barankazan.kronoxapp.R;
+import com.example.barankazan.kronoxapp.ScheduleActivity;
 
 public class LoadingScreen extends AppCompatActivity {
     @Override
@@ -13,12 +15,13 @@ public class LoadingScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_screen);
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        handler.postDelayed(new Runnable()
+        {
             @Override
             public void run() {
                 goToSchedule();
             }
-        }, 1500);
+        }, 2500);
 
 
     }

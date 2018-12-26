@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,12 +8,51 @@
     android:focusableInTouchMode="true"
     android:theme="@style/ApDef">
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <ImageView
         android:id="@+id/logoImg"
-        android:layout_width="154dp"
-        android:layout_height="147dp"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
         android:layout_gravity="center_horizontal"
         app:srcCompat="@drawable/higlogo" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:text="\nOptions:"
+        android:textAlignment="center"
+        android:textColor="#000000"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/grpToggle">
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/teacherToggle"
+            android:text="@string/teachToggle"
+            android:onClick="onRadioClick" />
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/programToggle"
+            android:text="@string/progToggle"
+            android:onClick="onRadioClick"/>
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/courseToggle"
+            android:text="@string/courseToggle"
+            android:onClick="onRadioClick"/>
+    </RadioGroup>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -32,14 +72,14 @@
         <TextView
             android:id="@+id/suggestion_text"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="37dp"
             android:text="Results:" />
 
         <ListView
             android:id="@+id/suggestion_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
     </LinearLayout>
 
