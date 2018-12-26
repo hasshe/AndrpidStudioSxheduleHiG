@@ -25,11 +25,6 @@ public class HomeFragment extends Fragment {
                 Toast toast = Toast.makeText(getActivity(),
                         "Unavailable", Toast.LENGTH_SHORT);
                 toast.show();
-                loginFragment f= new loginFragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, f, "findThisFragment")
-                        .addToBackStack(null)
-                        .commit();
             }
             });
         return v;

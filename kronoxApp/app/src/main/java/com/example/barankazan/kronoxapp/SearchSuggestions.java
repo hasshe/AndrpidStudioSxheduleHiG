@@ -81,7 +81,7 @@ public class SearchSuggestions implements Runnable {
         if(courseNameHTMLData.length > 1) {
             return courseNameHTMLData[1].trim();
         } else {
-            return courseNameHTMLData[1].trim();
+            return courseName;
         }
     }
 }

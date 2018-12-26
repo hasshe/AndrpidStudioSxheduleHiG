@@ -1,7 +1,7 @@
 package Controllers;
 
 public class InfoHandler{
-    private String courseCode, programCode, lectureInfo, start, stop,
+    private String courseCode, programCode, lectureInfo, start, stop, date,
             startDate, startTime, stopTime, roomNr, teacherSignature, secondTeacherSignature;
 
     public void setCourseCode(String courseCode) {
@@ -25,14 +25,12 @@ public class InfoHandler{
     public void setTeacherSignature(String teacherSignature) {
         this.teacherSignature = teacherSignature;
     }
-    public void setDate() {
-
-        startDate = start.substring(0, start.lastIndexOf("T"));
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public void setStart(String start) {
         this.start = start;
-        setDate();
         setStartTime();
     }
 
@@ -59,12 +57,13 @@ public class InfoHandler{
         stopTime = firstPart + ":" + stop.substring(stop.lastIndexOf("T") + 3, stop.lastIndexOf("Z")-2);
     }
     public String getLectureMoment () {
+
         return lectureInfo;
     }
 
     public String getDate() {
 
-        return startDate;
+        return date;
     }
     public String getStartTime() {
 

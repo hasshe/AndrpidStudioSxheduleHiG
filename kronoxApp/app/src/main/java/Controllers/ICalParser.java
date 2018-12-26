@@ -24,7 +24,7 @@ public class ICalParser {
     private FileInputStream fileReadi;
 
     public void parseICS(){
-        info = new ArrayList<InfoHandler>();
+        info = new ArrayList<>();
         try {
             fileReadi = new FileInputStream(new File(path, "/temp/SC1444.ics"));
             InputStreamReader inputStreamRead = new InputStreamReader(fileReadi);
@@ -33,8 +33,19 @@ public class ICalParser {
             String scheduleCalData;
             infoHandler = new InfoHandler();
             while((scheduleCalData = bufferRead.readLine()) != null) {
-                if(scheduleCalData.contains("DTSTART:"))
+                if(scheduleCalData.contains("DTSTART:")) {
                     infoHandler.setStart(scheduleCalData.substring(scheduleCalData.lastIndexOf(":") + 1));
+                    infoHandler.setDate(scheduleCalData.substring(scheduleCalData.lastIndexOf(":")+1).substring(0, 4) +
+                   " - ");
+                    String year = infoHandler.getDate();
+                    infoHandler.setDate(scheduleCalData.substring(scheduleCalData.lastIndexOf(":")+1).substring(4, 6) +
+                            " - ");
+                    year += infoHandler.getDate();
+                    infoHandler.setDate(scheduleCalData.substring(scheduleCalData.lastIndexOf(":")+1).substring(6, 8));
+                    year += infoHandler.getDate();
+
+                    infoHandler.setDate(year);
+                }
                 if(scheduleCalData.contains("DTEND:"))
                     infoHandler.setStop(scheduleCalData.substring(scheduleCalData.lastIndexOf(":") + 1));
 
@@ -59,6 +70,7 @@ public class ICalParser {
                         }
                     }
                 }
+
 
                 if(scheduleCalData.contains("LOCATION:")) {
                     infoHandler.setRoomNr(scheduleCalData.substring(scheduleCalData.lastIndexOf(":")+1));

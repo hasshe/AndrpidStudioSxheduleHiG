@@ -29,7 +29,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 
 public class SearchActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
     private static final int REQUEST_CODE_PERMISSION = 1;
     private String[] mPermission = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -67,13 +66,12 @@ public class SearchActivity extends AppCompatActivity {
                     grantResults[1] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[2] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[3] == PackageManager.PERMISSION_GRANTED) {
-            } else {Log.e(TAG, "No permission was granted.");
+            } else {
 
             }
         }
     }
     private void requestPermissions() {
-        try {
             if (ActivityCompat.checkSelfPermission(this, mPermission[0])
                     != PackageManager.PERMISSION_GRANTED ||
                     ActivityCompat.checkSelfPermission(this, mPermission[1])
@@ -86,16 +84,12 @@ public class SearchActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this,
                         mPermission, REQUEST_CODE_PERMISSION);
             } else {
-                /*Keep going*/
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
         }
     }
 
     public String generateURL() {
         String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
-        //ändra P till S. för att få schema till lärare
         scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p." + programCode;
 
         return scheduleURL;
@@ -103,10 +97,7 @@ public class SearchActivity extends AppCompatActivity {
 
     public void downloadSchedule() {
         Uri calURI = Uri.parse(generateURL());
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-        File file = new File(path + "/temp/SC1444.ics");
 
-        boolean deleted = file.delete();
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 
         DownloadManager.Request request = new DownloadManager.Request(calURI);
@@ -168,8 +159,8 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void setAdapters() {
-        items = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+        items = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         suggestionsList.setAdapter(adapter);
     }
 

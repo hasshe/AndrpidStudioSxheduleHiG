@@ -4,7 +4,8 @@
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:theme="@style/ApDef">
 
     <ImageView
         android:id="@+id/logoImg"
@@ -32,7 +33,7 @@
             android:id="@+id/suggestion_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Results::" />
+            android:text="Results:" />
 
         <ListView
             android:id="@+id/suggestion_list"

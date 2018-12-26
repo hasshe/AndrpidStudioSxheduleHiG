@@ -5,13 +5,14 @@
     android:orientation="vertical"
     tools:context=".ScheduleActivity"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:theme="@style/ApDef">
 
     <fragment
         android:id="@+id/schedule"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         class="Fragments.ScheduleFragment"
-        tools:layout="@layout/fragment_schedule" />
+        tools:layout="@layout/fragment_schedule"
+        android:theme="@style/ApDef"/>
 
 </LinearLayout>
