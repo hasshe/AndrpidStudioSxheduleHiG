@@ -10,12 +10,4 @@
         android:scaleType="centerCrop"
         android:src="@drawable/hig" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_margin="16dp"
-        android:gravity="bottom|start"
-        android:orientation="vertical">
-
-    </LinearLayout>
 </FrameLayout>

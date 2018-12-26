@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".ScheduleActivity"
     xmlns:tools="http://schemas.android.com/tools"
     android:theme="@style/ApDef">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBarSchedule"
+        android:layout_width="match_parent"
+        android:layout_height="87dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:logo="@drawable/fargvit"
+        app:title="@string/app_name" />
 
     <fragment
         android:id="@+id/schedule"

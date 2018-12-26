@@ -13,10 +13,10 @@ import android.view.MenuItem;
 
 import com.example.barankazan.kronoxapp.Database.ScheduleFragment;
 import com.example.barankazan.kronoxapp.R;
-import SearchHandler.SearchActivity;
 import com.example.barankazan.kronoxapp.SettingsActivity;
 
 import Fragments.HomeFragment;
+import SearchHandler.SearchActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
