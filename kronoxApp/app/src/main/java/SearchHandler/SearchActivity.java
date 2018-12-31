@@ -177,17 +177,16 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     /**
-     * lägger till listeners till alternativen och sökfältet
+     * Reagerar på ändringar i sökfältet. Uppdateringen sker varje sekund vid ändring av textfältet
      */
     private void setListeners() {
         TextWatcher textWatcher = new TextWatcher() {
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
             }
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 queueUpdate(1000);
             }
             public void afterTextChanged(Editable s) {
-
             }
         };
         searchText.addTextChangedListener(textWatcher);

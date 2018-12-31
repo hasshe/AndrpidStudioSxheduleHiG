@@ -18,7 +18,7 @@ public class ICalDataParser {
     private String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
     private ScheduleInfo ScheduleInfo;
     private BufferedReader bufferRead;
-    private FileInputStream fileReadi;
+    private FileInputStream fileRead;
 
     /**
      * ICAL filen sparas temporärt och tolkar det data som anses vara relevant
@@ -26,11 +26,12 @@ public class ICalDataParser {
     public void parseICS(){
         info = new ArrayList<>();
         try {
-            fileReadi = new FileInputStream(new File(path, "/temp/ICFile.ics"));
-            InputStreamReader inputStreamRead = new InputStreamReader(fileReadi);
+            fileRead = new FileInputStream(new File(path, "/temp/ICFile.ics"));
+            InputStreamReader inputStreamRead = new InputStreamReader(fileRead);
             bufferRead = new BufferedReader(inputStreamRead);
 
             String scheduleCalData;
+
             ScheduleInfo = new ScheduleInfo();
             while((scheduleCalData = bufferRead.readLine()) != null) {
                 if(scheduleCalData.contains("DTSTART:")) {
@@ -63,8 +64,10 @@ public class ICalDataParser {
                             case "Moment:":
                                 String info = "";
                                 for(int index = i+1; index < scheduleCalDataHolder.length; index++) {
-                                    if(!scheduleCalDataHolder[index].equals("Aktivitetstyp:")) info += scheduleCalDataHolder[index] + " ";
-                                    if(scheduleCalDataHolder[index].equals("Aktivitetstyp:")) index = scheduleCalDataHolder.length;
+                                    if(scheduleCalDataHolder[index].equals("Aktivitetstyp:") == false)
+                                        info += scheduleCalDataHolder[index] + " ";
+                                    if(scheduleCalDataHolder[index].equals("Aktivitetstyp:"))
+                                        index = scheduleCalDataHolder.length;
                                 }
                                 ScheduleInfo.setLectureInfo(info);
                         }
