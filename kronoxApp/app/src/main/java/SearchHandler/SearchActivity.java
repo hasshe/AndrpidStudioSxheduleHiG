@@ -239,13 +239,11 @@ public class SearchActivity extends AppCompatActivity {
         guiSetList(suggestionsList, suggestions);
     }
 
-    private void guiSetList(final ListView view,
-                            final List<String> list) {
+    private void guiSetList(final ListView view, final List<String> list) {
         guiThread.post(new Runnable() {
             public void run() {
                 setList(list);
             }
-
         });
     }
 
