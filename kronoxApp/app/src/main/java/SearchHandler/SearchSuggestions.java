@@ -19,13 +19,20 @@ import java.util.List;
 public class SearchSuggestions implements Runnable {
     private SearchActivity suggest;
     private String searchFieldInput;
-    public int toggle;
 
+    /**
+     *
+     * @param suggest alternativen som framställs ska vara de nuvarande alterantiv som hittats
+     * @param searchFieldInput data som matas in skall vara det nuvarande inmatade data från sökfältet
+     */
     SearchSuggestions(SearchActivity suggest, String searchFieldInput) {
         this.suggest = suggest;
         this.searchFieldInput = searchFieldInput;
     }
 
+    /**
+     * Kör igång koden för tolkning av data för schemat
+     */
     @Override
     public void run() {
         List<String> suggestions = null;
@@ -42,9 +49,9 @@ public class SearchSuggestions implements Runnable {
     }
 
     /**
-     * Här läser appen in kronox JSON-kod och hämtar därifrån namn på alla program.
-     * @param searchFieldInput
-     * @return
+     * Här läses kronox JSON-kod och hämtar namn på resultat
+     * @param searchFieldInput data som matades in i sökfältet
+     * @return data som hittades
      */
     private List<String> suggestionsList(String searchFieldInput) throws JSONException, IOException {
 
@@ -128,6 +135,12 @@ public class SearchSuggestions implements Runnable {
 
         return messages;
     }
+
+    /**
+     *
+     * @param courseName kursens namn från HTML format
+     * @return kursens namn
+     */
     public String courseName(String courseName) {
         courseName = Html.fromHtml(courseName).toString();
         String[] courseNameHTMLData = courseName.split(",");

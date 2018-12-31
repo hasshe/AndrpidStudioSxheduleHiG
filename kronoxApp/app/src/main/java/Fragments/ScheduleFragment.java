@@ -14,18 +14,16 @@ import com.example.barankazan.kronoxapp.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import Parser.ICalDataParser;
 import Parser.ScheduleInfo;
 
 public class ScheduleFragment extends Fragment {
     private ListView scheduleList;
-    private ArrayList<ScheduleInfo> lecturesOfTheDay;
-    private MyAdapter adapter;
+    private ArrayList<ScheduleInfo> lectures;
+    private ListModellingAdapter adapter;
     private ArrayList<ScheduleInfo> list;
-    private Calendar date;
-    private SimpleDateFormat sdf;
+    private SimpleDateFormat dateFormat;
     private ICalDataParser parser;
 
     @Override
@@ -35,61 +33,60 @@ public class ScheduleFragment extends Fragment {
         initItems();
         scheduleList = mView.findViewById(R.id.schedule_list);
 
-        setAdapter();
         scheduleList.setAdapter(adapter);
-        getTodaysLectures();
+        getLectures();
         adapter.notifyDataSetChanged();
         return mView;
     }
 
     /**
-     * getTodaysLectures() tar de lektioner som matchar det valda datumet hos kalendern och lägger
-     * in dom i lecturesOfTheDay-listan.
+     * Hämtar de lektioner som finns bokade
      */
-    public void getTodaysLectures() {
-        lecturesOfTheDay.clear();
+    public void getLectures() {
+        lectures.clear();
         for(ScheduleInfo info : list) {
-            lecturesOfTheDay.add(info);
+            lectures.add(info);
 
         }
     }
 
     /**
-     * setList() hämtar en lista med informationen som kommer från ICAL-filen, ifrån ICalParsern.
+     * Hämtar en lista från parsern med data från ICAL filen
      */
     public void setList() {
+
         list.clear();
         list.addAll(parser.getInfoList());
     }
 
+    /**
+     * Initierar hanteringen av data
+     */
     public void initItems() {
         parser = new ICalDataParser();
         parser.parseICS();
 
-        sdf = new SimpleDateFormat("yyyyMMdd");
-        date = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("yyyyMMdd");
         list = new ArrayList<>();
 
         setList();
-        lecturesOfTheDay = new ArrayList<>();
-        getTodaysLectures();
+        lectures = new ArrayList<>();
+        getLectures();
+
+        adapter = new ListModellingAdapter();
     }
 
-    public void setAdapter() {
-
-        adapter = new MyAdapter();
-    }
 
     /**
-     * MyAdapter ändrar så att listan ser ut som den gör, istället för att se ut som en vanlig lista.
+     * Ändrar hur varje element i listan ser ut och vad som kan finnas i ett element i listan
      */
 
-    class MyAdapter extends BaseAdapter {
+    class ListModellingAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
 
-            return lecturesOfTheDay.size();
+            return lectures.size();
         }
 
         @Override
@@ -104,6 +101,13 @@ public class ScheduleFragment extends Fragment {
             return 0;
         }
 
+        /**
+         *
+         * @param position var de ligger
+         * @param view vad som läggs till var i listans element
+         * @param parent vilken lista som ska modelleras
+         * @return data som lagts till i listan
+         */
         @Override
         public View getView(int position, View view, ViewGroup parent) {
             ViewHolder viewHolder;
@@ -117,17 +121,21 @@ public class ScheduleFragment extends Fragment {
                 viewHolder = (ViewHolder) view.getTag();
             }
 
-            viewHolder.startTime.setText(lecturesOfTheDay.get(position).getStartTime());
-            viewHolder.stopTime.setText(lecturesOfTheDay.get(position).getStopTime());
-            viewHolder.courseName.setText(lecturesOfTheDay.get(position).getCourseCode());
-            viewHolder.roomNr.setText(lecturesOfTheDay.get(position).getRoomNr());
-            viewHolder.teacherSignature.setText(lecturesOfTheDay.get(position).getTeacherSignature());
-            viewHolder.teacherSignature.setText(lecturesOfTheDay.get(position).getTeacherSignature());
-            viewHolder.moment.setText(lecturesOfTheDay.get(position).getLectureMoment());
-            viewHolder.date.setText(lecturesOfTheDay.get(position).getDate());
+            viewHolder.startTime.setText(lectures.get(position).getStartTime());
+            viewHolder.stopTime.setText(lectures.get(position).getStopTime());
+            viewHolder.courseName.setText(lectures.get(position).getCourseCode());
+            viewHolder.roomNr.setText(lectures.get(position).getRoomNr());
+            viewHolder.teacherSignature.setText(lectures.get(position).getTeacherSignature());
+            viewHolder.teacherSignature.setText(lectures.get(position).getTeacherSignature());
+            viewHolder.moment.setText(lectures.get(position).getLectureMoment());
+            viewHolder.date.setText(lectures.get(position).getDate());
+
             return view;
         }
 
+        /**
+         * hanterar vilka views som finns via dess ID
+         */
         private class ViewHolder {
             TextView startTime, stopTime, courseName, roomNr, teacherSignature, moment, date;
 

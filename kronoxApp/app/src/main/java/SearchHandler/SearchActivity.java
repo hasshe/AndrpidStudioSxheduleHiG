@@ -19,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import com.example.barankazan.kronoxapp.R;
 
@@ -52,8 +51,6 @@ public class SearchActivity extends AppCompatActivity {
     private String startDate = "idag";
     private String programCode = "";
 
-    private RadioButton progToggle, teachToggle;
-    private RadioGroup grpRadio;
     public int toggle = 0;
 
     @Override
@@ -67,6 +64,13 @@ public class SearchActivity extends AppCompatActivity {
         setListeners();
         setAdapters();
     }
+
+    /**
+     *
+     * @param requestCode om tillåtelse finns ( 1 eller 0)
+     * @param permissions vilka tillåtelser finns
+     * @param grantResults resultat av tillåtelserna
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -81,6 +85,10 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
     }
+
+    /**
+     * Frågar efter tillåtelse
+     */
     private void requestPermissions() {
             if (ActivityCompat.checkSelfPermission(this, mPermission[0])
                     != PackageManager.PERMISSION_GRANTED ||
@@ -98,6 +106,10 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * genererar den URL som behövs för sökning av ett schema
+     * @return null
+     */
     public String generateURL() {
         if(toggle == 1) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
@@ -117,6 +129,10 @@ public class SearchActivity extends AppCompatActivity {
          return null;
     }
 
+    /**
+     *
+     * @param view vilken radioknapp som är intryckt
+     */
     public void onRadioClick(View view) {
         boolean checked = ((RadioButton) view).isChecked();
         switch(view.getId()) {
@@ -138,6 +154,9 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Temporärt laddar ned det valda schemat för tolkning
+     */
     public void downloadSchedule() {
         Uri calURI = Uri.parse(generateURL());
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
@@ -152,17 +171,17 @@ public class SearchActivity extends AppCompatActivity {
         downloadManager.enqueue(request);
     }
 
-    @Override
-    protected void onDestroy() {
-        suggestionThread.shutdownNow();
-        super.onDestroy();
-    }
-
+    /**
+     * lista som består av alternativen
+     */
     private void findViews() {
         searchText = findViewById(R.id.search);
         suggestionsList = findViewById(R.id.suggestion_list);
     }
 
+    /**
+     * lägger till listeners till alternativen och sökfältet
+     */
     private void setListeners() {
         TextWatcher textWatcher = new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -174,7 +193,6 @@ public class SearchActivity extends AppCompatActivity {
 
             }
         };
-
         searchText.addTextChangedListener(textWatcher);
 
         AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
@@ -184,10 +202,12 @@ public class SearchActivity extends AppCompatActivity {
                 doSchedule(query);
             }
         };
-
         suggestionsList.setOnItemClickListener(clickListener);
     }
-
+    /**
+     *
+     * @param query öppnar laddningsskärmen
+     */
     private void doSchedule(String query) {
         Intent intent = new Intent(SearchActivity.this, LoadingScreen.class);
         int semicolonCounter = 0;
@@ -202,12 +222,18 @@ public class SearchActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Lägger till adapters till listorna
+     */
     private void setAdapters() {
         items = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         suggestionsList.setAdapter(adapter);
     }
 
+    /**
+     * initierar sökningen och redovisning av resultatet
+     */
     private void initThreading() {
         guiThread = new Handler();
         suggestionThread = Executors.newSingleThreadExecutor();
@@ -220,7 +246,7 @@ public class SearchActivity extends AppCompatActivity {
                     suggestionPending.cancel(true);
 
                 if (original.length() != 0) {
-                    setText(R.string.loading_text);
+
                     SearchSuggestions suggestTask = new SearchSuggestions(SearchActivity.this, original);
                     suggestionPending = suggestionThread.submit(suggestTask);
 
@@ -230,6 +256,10 @@ public class SearchActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     *
+     * @param delayMillis tid i millisekunder för att skapa en delay som tillåter applikationen att utföra färdigt exekveringar
+     */
     private void queueUpdate(long delayMillis) {
         guiThread.removeCallbacks(updateTask);
         guiThread.postDelayed(updateTask, delayMillis);
@@ -242,16 +272,14 @@ public class SearchActivity extends AppCompatActivity {
     private void guiSetList(final ListView view, final List<String> list) {
         guiThread.post(new Runnable() {
             public void run() {
-                setList(list);
+                setList(suggestions);
             }
         });
     }
-
-    private void setText(int id) {
-        adapter.clear();
-        adapter.add(getResources().getString(id));
-    }
-
+    /**
+     *
+     * @param list lägger till data till listan
+     */
     private void setList(List<String> list) {
         adapter.clear();
         adapter.addAll(list);

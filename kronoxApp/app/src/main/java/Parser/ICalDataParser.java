@@ -11,9 +11,8 @@ import java.util.ArrayList;
 
 
 /**
- * ICAL-filen parsas och den informationen som behövs spars ner i info listan.
+ * I denna klass tolkas data i filen och returnerar det data
  */
-
 public class ICalDataParser {
     public static ArrayList<ScheduleInfo> info;
     private String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
@@ -21,6 +20,9 @@ public class ICalDataParser {
     private BufferedReader bufferRead;
     private FileInputStream fileReadi;
 
+    /**
+     * ICAL filen sparas temporärt och tolkar det data som anses vara relevant
+     */
     public void parseICS(){
         info = new ArrayList<>();
         try {
@@ -86,6 +88,10 @@ public class ICalDataParser {
         }
     }
 
+    /**
+     *
+     * @return array med info om schemat
+     */
     public ArrayList<ScheduleInfo> getInfoList(){
 
         return info;
