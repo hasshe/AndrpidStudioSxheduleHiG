@@ -33,6 +33,7 @@ import java.util.concurrent.Future;
 import Navigation.LoadingScreen;
 
 public class SearchActivity extends AppCompatActivity {
+
     private static final int REQUEST_CODE_PERMISSION = 1;
     private String[] mPermission = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
