@@ -22,6 +22,15 @@ public class ScheduleFragment extends Fragment {
     RecyclerViewAdapter mAdapter;
     CoordinatorLayout coordinatorLayout;
 
+    /**
+     * Metoden körs när fragment blir framkallad. Hämtar själva layout den behöver, skapar ny instans av
+     * DatabaseHelper och RecyclerViewAdapter har inbyggd metod onSwipe som körs när användaren
+     * swipar CardView till vänster eller höger.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +63,9 @@ public class ScheduleFragment extends Fragment {
         return v;
     }
 
+    /**
+     * Skapar ny CardViw och lägger in ny data i databasen.
+     */
     private void addItem(){
 
         String name = "Database Item 1";
@@ -64,11 +76,19 @@ public class ScheduleFragment extends Fragment {
         mAdapter.swapCursor(getAllItems());
     }
 
+    /**
+     * Metoden körs när användaren swipar CardView, då ska metoden ta bort data från databasen.
+     * @param id
+     */
     private void removeItem(long id){
         mDatabase.delete(DatabaseHelper.DATABASE_TABLE, DatabaseHelper.COLUMN_ID +"="+ id, null);
         mAdapter.swapCursor(getAllItems());
     }
 
+    /**
+     * Hämtar all innehåll från databasen.
+     * @return
+     */
     private Cursor getAllItems(){
         return mDatabase.query(
                 DatabaseHelper.DATABASE_TABLE,

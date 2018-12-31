@@ -13,12 +13,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_NAME = "NAME";
     public static final String COLUMN_URL = "URL";
 
-
+    /**
+     * Konstruktor som hämtar context och ställer in namnen för databasen samt versionen.
+     * @param context
+     */
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Metod anropas bara om lokala databasen existerar inte.
+     * @param db
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         final String SQL_CREATE_TABLE = "CREATE TABLE "+DATABASE_TABLE+" ("+COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+COLUMN_NAME+" TEXT, "+COLUMN_URL+" TEXT);";
@@ -26,6 +33,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_TABLE);
     }
 
+    /**
+     * Om konstruktor kräver version som är högre än den existerande databas körs den här metoden.
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);

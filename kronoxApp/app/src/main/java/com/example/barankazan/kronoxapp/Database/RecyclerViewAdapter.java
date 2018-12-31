@@ -22,6 +22,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public RelativeLayout parentLayout;
         public TextView nameText;
 
+        /**
+         * Konstruktor som hittar båda TextView och RelativeLayout för att spara som global variabel.
+         * @param itemView
+         */
         public MyViewHolder(View itemView) {
             super(itemView);
             nameText = itemView.findViewById(R.id.txtName);
@@ -29,17 +33,34 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
+    /**
+     * Konstruktor som tar emot båda parameter och sparar som global variabel.
+     * @param context
+     * @param cursor
+     */
     public RecyclerViewAdapter(Context context, Cursor cursor) {
         mContext = context;
         mCursor = cursor;
     }
 
+    /**
+     * Skapar ny CardView.
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_row, parent, false);
         return new MyViewHolder(itemView);
     }
 
+    /**
+     * Ställer in namn och ID för CardView, det innehåller även onClick metod som reagerar när en av
+     * CardView är inklickad.
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         if (!mCursor.moveToPosition(position)){
@@ -60,11 +81,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         });
     }
 
+    /**
+     * Hämtar antal förekomst det finns från databasen.
+     * @return
+     */
     @Override
     public int getItemCount() {
         return mCursor.getCount();
     }
 
+    /**
+     * Byter cursor så fort när ändringar har sket i databasen T.ex. ny data blir lagrad eller bortagen.
+     * @param newCursor
+     */
     public void swapCursor(Cursor newCursor){
         if(mCursor != null){
             mCursor.close();

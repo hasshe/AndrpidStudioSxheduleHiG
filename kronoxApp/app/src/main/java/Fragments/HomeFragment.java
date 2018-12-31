@@ -14,6 +14,14 @@ import com.example.barankazan.kronoxapp.R;
 
 public class HomeFragment extends Fragment {
 
+    /**
+     * Ställer upp layout för den här fragment och onClick metod inbyggd
+     * som skapar toast när knappen är klickad.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

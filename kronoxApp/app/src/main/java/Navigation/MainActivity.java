@@ -21,6 +21,11 @@ import SearchHandler.SearchActivity;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
 
+    /**
+     * Det första som körs när activity blir framkallad. Metoden lägger till Toolbar och NavigationView.
+     * Om saveInstanceState är tom så ska standart fragment köras vilket är HomeFragment.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +52,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
        }
 
-
+    /**
+     * När man klickar en av alternativet i navigaotrn så ska den här metoden framkallas som ska kör en av
+     * fragment eller activity. När en av alternativet är klickad så ska navigatorn fönstern stängas.
+     * @param menuItem
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
@@ -77,6 +87,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    /**
+     * När man klickar på tillbaka knappen från telefonen så ska navigatorn fönstern stängas
+     * om det är öppet annars så ska applikationen stängas ner.
+     */
     @Override
     public void onBackPressed() {
         if(drawer.isDrawerOpen(GravityCompat.START)){
