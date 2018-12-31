@@ -32,6 +32,7 @@ import java.util.concurrent.Future;
 import Navigation.LoadingScreen;
 
 public class SearchActivity extends AppCompatActivity {
+
     private static final int REQUEST_CODE_PERMISSION = 1;
     private String[] mPermission = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -264,16 +265,15 @@ public class SearchActivity extends AppCompatActivity {
         guiThread.postDelayed(updateTask, delayMillis);
     }
 
-    /**
-     *
-     * @param suggestions lägger till resultat i listan som skrivs ut i applikationen
-     */
-    public void setSuggestions(final List<String> suggestions) {
+    public void setSuggestions(List<String> suggestions) {
+        guiSetList(suggestionsList, suggestions);
+    }
+
+    private void guiSetList(final ListView view, final List<String> list) {
         guiThread.post(new Runnable() {
             public void run() {
                 setList(suggestions);
             }
-
         });
     }
     /**
