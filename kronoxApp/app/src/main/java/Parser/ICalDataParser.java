@@ -26,7 +26,7 @@ public class ICalDataParser {
     public void parseICS(){
         info = new ArrayList<>();
         try {
-            fileReadi = new FileInputStream(new File(path, "/temp/SC1444.ics"));
+            fileReadi = new FileInputStream(new File(path, "/temp/ICFile.ics"));
             InputStreamReader inputStreamRead = new InputStreamReader(fileReadi);
             bufferRead = new BufferedReader(inputStreamRead);
 

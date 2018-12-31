@@ -1,12 +1,11 @@
 <resources>
-    <string name="app_name">My HiG Schedule</string>
+    <string name="app_name">HiG Schedule</string>
     <string name="nav_home">Home</string>
     <string name="nav_search_schedule">Search Schedule</string>
     <string name="nav_schedules">Saved Schedules</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_drawer_open">Open navigation drawer</string>
     <string name="nav_drawer_close">Close navigation drawer</string>
-    <string name="loading_text">Loading...</string>
     <string name="loading_screen">Loading Please Wait...</string>
     <string name="progToggle">Search Program Schedule</string>
     <string name="teachToggle">Search Teacher Schedule</string>

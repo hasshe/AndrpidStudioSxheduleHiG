@@ -1,4 +1,4 @@
-package com.example.barankazan.kronoxapp;
+package Settings;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

@@ -25,7 +25,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/ApDef"></activity>
         <activity
-            android:name="Navigation.LoadingScreen"
+            android:name=".LoadingScreen"
             android:screenOrientation="portrait"
             android:theme="@style/ApDef"></activity>
         <activity
@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="Settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/ApDef"></activity>
     </application>

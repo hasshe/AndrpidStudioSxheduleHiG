@@ -13,7 +13,7 @@ import android.view.MenuItem;
 
 import com.example.barankazan.kronoxapp.Database.ScheduleFragment;
 import com.example.barankazan.kronoxapp.R;
-import com.example.barankazan.kronoxapp.SettingsActivity;
+import Settings.SettingsActivity;
 
 import Fragments.HomeFragment;
 import SearchHandler.SearchActivity;

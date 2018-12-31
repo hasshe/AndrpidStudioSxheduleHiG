@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
+import com.example.barankazan.kronoxapp.LoadingScreen;
 import com.example.barankazan.kronoxapp.R;
 
 import java.io.File;
@@ -29,10 +30,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import Navigation.LoadingScreen;
-
 public class SearchActivity extends AppCompatActivity {
-
     private static final int REQUEST_CODE_PERMISSION = 1;
     private String[] mPermission = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -46,10 +44,9 @@ public class SearchActivity extends AppCompatActivity {
     private List<String> items;
     private ArrayAdapter<String> adapter;
     private DownloadManager downloadManager;
-    private SearchSuggestions suggestions;
 
     private String startDate = "idag";
-    private String programCode = "";
+    private String searchCode = "";
 
     public int toggle = 0;
 
@@ -113,17 +110,17 @@ public class SearchActivity extends AppCompatActivity {
     public String generateURL() {
         if(toggle == 1) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
-            scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p." + programCode;
+            scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p." + searchCode;
             return scheduleURL;
         }
         else if(toggle == 2) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
-            scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=s." + programCode;
+            scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=s." + searchCode;
             return scheduleURL;
         }
         else if(toggle == 3) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
-            scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=k." + programCode;
+            scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=k." + searchCode;
             return scheduleURL;
         }
          return null;
@@ -160,13 +157,13 @@ public class SearchActivity extends AppCompatActivity {
     public void downloadSchedule() {
         Uri calURI = Uri.parse(generateURL());
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-        File file = new File(path + "/temp/SC1444.ics");
+        File file = new File(path + "/temp/ICFile.ics");
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         file.delete();
         DownloadManager.Request request = new DownloadManager.Request(calURI);
-        request.setTitle("SC1444");
+        request.setTitle("ICFile");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "temp/SC1444.ics");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "temp/ICFile.ics");
 
         downloadManager.enqueue(request);
     }
@@ -213,7 +210,7 @@ public class SearchActivity extends AppCompatActivity {
         int semicolonCounter = 0;
         for(int z = 0; z < query.length(); z++) {
             if(query.charAt(z) == ':' && semicolonCounter != 1) {
-                programCode = query.substring(0, z);
+                searchCode = query.substring(0, z);
                 semicolonCounter++;
             }
         }
@@ -265,11 +262,11 @@ public class SearchActivity extends AppCompatActivity {
         guiThread.postDelayed(updateTask, delayMillis);
     }
 
-    public void setSuggestions(List<String> suggestions) {
-        guiSetList(suggestionsList, suggestions);
-    }
-
-    private void guiSetList(final ListView view, final List<String> list) {
+    /**
+     *
+     * @param suggestions lägger till resultat i listan som skrivs ut i applikationen
+     */
+    public void setSuggestions(final List<String> suggestions) {
         guiThread.post(new Runnable() {
             public void run() {
                 setList(suggestions);

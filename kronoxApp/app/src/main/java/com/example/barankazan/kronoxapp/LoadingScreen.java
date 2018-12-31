@@ -1,4 +1,4 @@
-package Navigation;
+package com.example.barankazan.kronoxapp;
 
 
 import android.content.Intent;
@@ -6,14 +6,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.barankazan.kronoxapp.R;
-import com.example.barankazan.kronoxapp.ScheduleActivity;
-
 public class LoadingScreen extends AppCompatActivity {
 
     /**
-     * Metoden körs när activity blir framkallad, det sätter upp layout för loading, skapar en ny instans
-     * av Handler och ställer in timer innan nästa metoden körs.
+     * Anropas när ett schema väljs. Laddningsskärmen påbörjar och skapar en delay på 2.5 sekunder
+     * för att tillåta schemat att laddas färdigt
      * @param savedInstanceState
      */
     @Override
@@ -25,15 +22,15 @@ public class LoadingScreen extends AppCompatActivity {
         {
             @Override
             public void run() {
-                goToSchedule();
+                showSchedule();
             }
         }, 2500);
     }
 
     /**
-     * Metoden skapar ny instans av Intent så att nästa activity kan köras.
+     * Ny instans av intent som kör igång ScheduleActivity
      */
-    public void goToSchedule() {
+    public void showSchedule() {
         Intent intent = new Intent(LoadingScreen.this, ScheduleActivity.class);
         startActivity(intent);
         this.finish();
