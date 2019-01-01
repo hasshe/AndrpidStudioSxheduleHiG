@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.barankazan.kronoxapp.R;
 
-public class ScheduleFragment extends Fragment {
+public class DatabaseFragment extends Fragment {
 
     static SQLiteDatabase mDatabase;
     RecyclerView recyclerView;

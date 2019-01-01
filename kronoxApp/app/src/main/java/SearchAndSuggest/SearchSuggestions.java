@@ -1,4 +1,4 @@
-package SearchHandler;
+package SearchAndSuggest;
 
 import android.text.Html;
 
@@ -30,9 +30,6 @@ public class SearchSuggestions implements Runnable {
         this.searchFieldInput = searchFieldInput;
     }
 
-    /**
-     * Kör igång koden för tolkning av data för schemat
-     */
     @Override
     public void run() {
         List<String> suggestions = null;
@@ -51,7 +48,7 @@ public class SearchSuggestions implements Runnable {
     /**
      * Här läses kronox JSON-kod och hämtar namn på resultat
      * @param searchFieldInput data som matades in i sökfältet
-     * @return data som hittades
+     * @return data som hittades som matchar sökfältet
      */
     private List<String> suggestionsList(String searchFieldInput) throws JSONException, IOException {
 
@@ -79,8 +76,8 @@ public class SearchSuggestions implements Runnable {
                 }
 
                 for(JSONObject object : jsonObjectArrayList) {
-                    String courseName = object.getString("value") + ": \n" + courseName( object.getString("label"));
-                    messages.add(courseName);
+                    String programName = object.getString("value") + ": \n" + programName(object.getString("label"));
+                    messages.add(programName);
                 }
                 return messages;
             }else if(suggest.toggle == 2) {
@@ -127,8 +124,8 @@ public class SearchSuggestions implements Runnable {
                 }
 
                 for(JSONObject object : jsonObjectArrayList) {
-                    String courseName = object.getString("value") + ": \n" + courseName( object.getString("label"));
-                    messages.add(courseName);
+                    String teacherName = object.getString("value") + ": \n" + teacherName( object.getString("label"));
+                    messages.add(teacherName);
                 }
                 return messages;
             }
@@ -138,7 +135,7 @@ public class SearchSuggestions implements Runnable {
 
     /**
      *
-     * @param courseName kursens namn från HTML format
+     * @param courseName kursens namn i HTML format
      * @return kursens namn
      */
     public String courseName(String courseName) {
@@ -148,6 +145,34 @@ public class SearchSuggestions implements Runnable {
             return courseNameHTMLData[1].trim();
         } else {
             return courseName;
+        }
+    }
+    /**
+     *
+     * @param programName programmets namn i HTML format
+     * @return programmets namn
+     */
+    public String programName(String programName) {
+        programName = Html.fromHtml(programName).toString();
+        String[] programNameHTMLData = programName.split(",");
+        if(programNameHTMLData.length > 1) {
+            return programNameHTMLData[1].trim();
+        } else {
+            return programName;
+        }
+    }
+    /**
+     *
+     * @param teacherName lektorns namn i HTML format
+     * @return lektorns namn
+     */
+    public String teacherName(String teacherName) {
+        teacherName = Html.fromHtml(teacherName).toString();
+        String[] teacherNameHTMLData = teacherName.split(",");
+        if(teacherNameHTMLData.length > 1) {
+            return teacherNameHTMLData[1].trim();
+        } else {
+            return teacherName;
         }
     }
 }

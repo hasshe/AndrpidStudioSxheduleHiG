@@ -11,12 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.barankazan.kronoxapp.Database.ScheduleFragment;
+import com.example.barankazan.kronoxapp.Database.DatabaseFragment;
 import com.example.barankazan.kronoxapp.R;
-import Settings.SettingsActivity;
 
 import Fragments.HomeFragment;
-import SearchHandler.SearchActivity;
+import SearchAndSuggest.SearchActivity;
+import Settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.nav_schedules:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ScheduleFragment())
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DatabaseFragment())
                         .commit();
                 break;
             case R.id.nav_settings:

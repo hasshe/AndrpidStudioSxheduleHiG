@@ -16,7 +16,14 @@ public class ScheduleInfo {
 
         this.courseCode = courseCode;
     }
+    /**
+     *
+     * @param lectureInfo sätter lektionens detaljerade information
+     */
+    public void setLectureInfo(String lectureInfo) {
 
+        this.lectureInfo = lectureInfo;
+    }
     /**
      *
      * @param programCode sätter programmets kod
@@ -28,15 +35,6 @@ public class ScheduleInfo {
 
     /**
      *
-     * @param lectureInfo sätter lektionens detaljerade information
-     */
-    public void setLectureInfo(String lectureInfo) {
-
-        this.lectureInfo = lectureInfo;
-    }
-
-    /**
-     *
      * @param roomNr sätter vilken sal lektionen tar plats i
      */
     public void setRoomNr(String roomNr) {
@@ -44,13 +42,6 @@ public class ScheduleInfo {
         this.roomNr = roomNr;
     }
 
-    /**
-     *
-     * @param secondTeacherSignature sätter andra lektorns signatur ifall det finns
-     */
-    public void setSecondTeacherSignature(String secondTeacherSignature) {
-        this.secondTeacherSignature = secondTeacherSignature;
-    }
 
     /**
      *
@@ -59,7 +50,13 @@ public class ScheduleInfo {
     public void setTeacherSignature(String teacherSignature) {
         this.teacherSignature = teacherSignature;
     }
-
+    /**
+     *
+     * @param secondTeacherSignature sätter andra lektorns signatur ifall det finns
+     */
+    public void setSecondTeacherSignature(String secondTeacherSignature) {
+        this.secondTeacherSignature = secondTeacherSignature;
+    }
     /**
      *
      * @param date sätter datumet för lektionen
@@ -76,6 +73,13 @@ public class ScheduleInfo {
         this.start = start;
         setStartTime();
     }
+    /**
+     * Här hanteras biten "DTSTART" och tar tiden i hh:mm
+     */
+    public void setStartTime() {
+        int firstPart = Integer.parseInt(start.substring(start.lastIndexOf("T") + 1, start.lastIndexOf("Z")-4)) + 1;
+        startTime = firstPart + ":" + start.substring(start.lastIndexOf("T") + 3, start.lastIndexOf("Z")-2);
+    }
 
     /**
      *
@@ -87,14 +91,6 @@ public class ScheduleInfo {
     }
 
     /**
-     * Här hanteras biten "DTSTART" och tar tiden i hh:mm
-     */
-    public void setStartTime() {
-        int firstPart = Integer.parseInt(start.substring(start.lastIndexOf("T") + 1, start.lastIndexOf("Z")-4)) + 1;
-        startTime = firstPart + ":" + start.substring(start.lastIndexOf("T") + 3, start.lastIndexOf("Z")-2);
-    }
-
-    /**
      * Här hanteras biten "DTSTOP" och tar tiden i hh:mm
      */
     public void setStopTime() {
@@ -102,14 +98,6 @@ public class ScheduleInfo {
         stopTime = firstPart + ":" + stop.substring(stop.lastIndexOf("T") + 3, stop.lastIndexOf("Z")-2);
     }
 
-    /**
-     *
-     * @return detaljerad beskrivning om lektionen
-     */
-    public String getLectureMoment () {
-
-        return lectureInfo;
-    }
 
     /**
      *
@@ -118,6 +106,14 @@ public class ScheduleInfo {
     public String getDate() {
 
         return date;
+    }
+    /**
+     *
+     * @return detaljerad beskrivning om lektionen
+     */
+    public String getLectureDetailedInfo() {
+
+        return lectureInfo;
     }
 
     /**
@@ -129,14 +125,6 @@ public class ScheduleInfo {
         return startTime;
     }
 
-    /**
-     *
-     * @return tiden då lektionen slutar
-     */
-    public String getStopTime() {
-
-        return stopTime;
-    }
 
     /**
      *
@@ -148,20 +136,27 @@ public class ScheduleInfo {
     }
     /**
      *
+     * @return lektorns signatur
+     */
+    public String getTeacherSignature() {
+
+        return teacherSignature + " " + secondTeacherSignature;
+    }
+    /**
+     *
      * @return salen där lektionen tar plats
      */
     public String getRoomNr() {
 
         return roomNr;
     }
-
     /**
      *
-     * @return lektorns signatur
+     * @return tiden då lektionen slutar
      */
-    public String getTeacherSignature() {
+    public String getStopTime() {
 
-        return teacherSignature + " " + secondTeacherSignature;
+        return stopTime;
     }
 
 }
