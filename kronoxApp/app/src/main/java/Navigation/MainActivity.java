@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.barankazan.kronoxapp.Database.DatabaseFragment;
+import com.example.barankazan.kronoxapp.Database.ScheduleFragment;
 import com.example.barankazan.kronoxapp.R;
 
 import Fragments.HomeFragment;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.nav_schedules:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DatabaseFragment())
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ScheduleFragment())
                         .commit();
                 break;
             case R.id.nav_settings:
