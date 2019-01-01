@@ -111,19 +111,19 @@ public class SearchActivity extends AppCompatActivity {
         if(toggle == 1) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p." + searchCode;
-            ScheduleFragment.addItem("Hello", scheduleURL);
+            ScheduleFragment.addItem(searchCode, scheduleURL);
             return scheduleURL;
         }
         else if(toggle == 2) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=s." + searchCode;
-            ScheduleFragment.addItem("Hello", scheduleURL);
+            ScheduleFragment.addItem(searchCode, scheduleURL);
             return scheduleURL;
         }
         else if(toggle == 3) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=k." + searchCode;
-            ScheduleFragment.addItem("Hello", scheduleURL);
+            ScheduleFragment.addItem(searchCode, scheduleURL);
             return scheduleURL;
         }
          return null;
