@@ -9,6 +9,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,9 @@ import com.example.barankazan.kronoxapp.R;
 
 public class ScheduleFragment extends Fragment {
 
-    SQLiteDatabase mDatabase;
+    static SQLiteDatabase mDatabase;
     RecyclerView recyclerView;
-    RecyclerViewAdapter mAdapter;
+    static RecyclerViewAdapter mAdapter;
     CoordinatorLayout coordinatorLayout;
 
     /**
@@ -57,20 +58,16 @@ public class ScheduleFragment extends Fragment {
         }).attachToRecyclerView(recyclerView);
 
         coordinatorLayout = v.findViewById(R.id.coordinatorLayout);
-
-        addItem();
-
         return v;
     }
 
     /**
      * Skapar ny CardViw och lägger in ny data i databasen.
      */
-    private void addItem(){
-
-        String name = "Database Item 1";
+    public static void addItem(String name, String URL){
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_NAME, name);
+        cv.put(DatabaseHelper.COLUMN_URL, URL);
 
         mDatabase.insert(DatabaseHelper.DATABASE_TABLE, null, cv);
         mAdapter.swapCursor(getAllItems());
@@ -89,7 +86,7 @@ public class ScheduleFragment extends Fragment {
      * Hämtar all innehåll från databasen.
      * @return
      */
-    private Cursor getAllItems(){
+    public static Cursor getAllItems(){
         return mDatabase.query(
                 DatabaseHelper.DATABASE_TABLE,
                 null,

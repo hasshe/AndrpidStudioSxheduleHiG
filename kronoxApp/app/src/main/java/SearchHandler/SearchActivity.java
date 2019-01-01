@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,8 +21,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
+import com.example.barankazan.kronoxapp.Database.DatabaseHelper;
+import com.example.barankazan.kronoxapp.Database.ScheduleFragment;
 import com.example.barankazan.kronoxapp.LoadingScreen;
 import com.example.barankazan.kronoxapp.R;
+import com.example.barankazan.kronoxapp.ScheduleActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -111,16 +115,22 @@ public class SearchActivity extends AppCompatActivity {
         if(toggle == 1) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p." + searchCode;
+            ScheduleFragment.addItem("Hello", scheduleURL);
+            Log.d("Hello", scheduleURL);
             return scheduleURL;
         }
         else if(toggle == 2) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=s." + searchCode;
+            ScheduleFragment.addItem("Hello", scheduleURL);
+            Log.d("Hello", scheduleURL);
             return scheduleURL;
         }
         else if(toggle == 3) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=k." + searchCode;
+            ScheduleFragment.addItem("Hello", scheduleURL);
+            Log.d("Hello", scheduleURL);
             return scheduleURL;
         }
          return null;
@@ -164,7 +174,6 @@ public class SearchActivity extends AppCompatActivity {
         request.setTitle("ICFile");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "temp/ICFile.ics");
-
         downloadManager.enqueue(request);
     }
 

@@ -67,8 +67,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             return;
         }
 
-        final String name = mCursor.getString(mCursor.getColumnIndex(DatabaseHelper.COLUMN_NAME));
         final long id = mCursor.getLong(mCursor.getColumnIndex(DatabaseHelper.COLUMN_ID));
+        final String name = mCursor.getString(mCursor.getColumnIndex(DatabaseHelper.COLUMN_NAME));
+        final String URL = mCursor.getString(mCursor.getColumnIndex(DatabaseHelper.COLUMN_URL));
 
         holder.nameText.setText(name);
         holder.itemView.setTag(id);
@@ -76,7 +77,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.parentLayout.setOnClickListener(new View.OnClickListener(){
 
             public void onClick(View view){
-                Toast.makeText(mContext, name, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, URL, Toast.LENGTH_SHORT).show();
             }
         });
     }
