@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/ApDef">
         <activity
-            android:name="SearchHandler.SearchActivity"
+            android:name="SearchAndSuggest.SearchActivity"
             android:parentActivityName="Navigation.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ApDef"></activity>

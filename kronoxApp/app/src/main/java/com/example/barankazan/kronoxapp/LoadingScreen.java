@@ -17,7 +17,8 @@ public class LoadingScreen extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_screen);
-        final Handler handler = new Handler();
+        Handler handler = new Handler();
+
         handler.postDelayed(new Runnable()
         {
             @Override

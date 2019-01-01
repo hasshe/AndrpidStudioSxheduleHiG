@@ -1,4 +1,4 @@
-package SearchHandler;
+package SearchAndSuggest;
 
 import android.Manifest;
 import android.app.DownloadManager;
@@ -13,7 +13,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,11 +20,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
-import com.example.barankazan.kronoxapp.Database.DatabaseHelper;
-import com.example.barankazan.kronoxapp.Database.ScheduleFragment;
 import com.example.barankazan.kronoxapp.LoadingScreen;
 import com.example.barankazan.kronoxapp.R;
-import com.example.barankazan.kronoxapp.ScheduleActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,20 +31,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class SearchActivity extends AppCompatActivity {
-    private static final int REQUEST_CODE_PERMISSION = 1;
+    private static int permission_request_code = 1;
     private String[] mPermission = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private ListView suggestionsList;
+    private ListView listOfSuggestions;
     private EditText searchText;
     private Handler guiThread;
     private ExecutorService suggestionThread;
-    private Runnable updateTask;
+    private Runnable updater;
     private Future<?> suggestionPending;
-    private List<String> items;
+    private List<String> listData;
     private ArrayAdapter<String> adapter;
     private DownloadManager downloadManager;
-
     private String startDate = "idag";
     private String searchCode = "";
 
@@ -60,7 +55,7 @@ public class SearchActivity extends AppCompatActivity {
         requestPermissions();
         setContentView(R.layout.activity_search);
 
-        initThreading();
+        initiateThread();
         findViews();
         setListeners();
         setAdapters();
@@ -75,7 +70,7 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CODE_PERMISSION) {
+        if (requestCode == permission_request_code) {
             if (grantResults.length == 4 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED &&
@@ -101,7 +96,7 @@ public class SearchActivity extends AppCompatActivity {
                             != PackageManager.PERMISSION_GRANTED) {
 
                 ActivityCompat.requestPermissions(this,
-                        mPermission, REQUEST_CODE_PERMISSION);
+                        mPermission, permission_request_code);
             } else {
 
         }
@@ -115,22 +110,16 @@ public class SearchActivity extends AppCompatActivity {
         if(toggle == 1) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p." + searchCode;
-            ScheduleFragment.addItem("Hello", scheduleURL);
-            Log.d("Hello", scheduleURL);
             return scheduleURL;
         }
         else if(toggle == 2) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=s." + searchCode;
-            ScheduleFragment.addItem("Hello", scheduleURL);
-            Log.d("Hello", scheduleURL);
             return scheduleURL;
         }
         else if(toggle == 3) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=k." + searchCode;
-            ScheduleFragment.addItem("Hello", scheduleURL);
-            Log.d("Hello", scheduleURL);
             return scheduleURL;
         }
          return null;
@@ -174,6 +163,7 @@ public class SearchActivity extends AppCompatActivity {
         request.setTitle("ICFile");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "temp/ICFile.ics");
+
         downloadManager.enqueue(request);
     }
 
@@ -182,7 +172,7 @@ public class SearchActivity extends AppCompatActivity {
      */
     private void findViews() {
         searchText = findViewById(R.id.search);
-        suggestionsList = findViewById(R.id.suggestion_list);
+        listOfSuggestions = findViewById(R.id.suggestion_list);
     }
 
     /**
@@ -204,16 +194,16 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String query = (String) parent.getItemAtPosition(position);
-                doSchedule(query);
+                gotoSchedule(query);
             }
         };
-        suggestionsList.setOnItemClickListener(clickListener);
+        listOfSuggestions.setOnItemClickListener(clickListener);
     }
     /**
      *
      * @param query öppnar laddningsskärmen
      */
-    private void doSchedule(String query) {
+    private void gotoSchedule(String query) {
         Intent intent = new Intent(SearchActivity.this, LoadingScreen.class);
         int semicolonCounter = 0;
         for(int z = 0; z < query.length(); z++) {
@@ -222,7 +212,6 @@ public class SearchActivity extends AppCompatActivity {
                 semicolonCounter++;
             }
         }
-
         downloadSchedule();
         startActivity(intent);
     }
@@ -231,31 +220,26 @@ public class SearchActivity extends AppCompatActivity {
      * Lägger till adapters till listorna
      */
     private void setAdapters() {
-        items = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
-        suggestionsList.setAdapter(adapter);
+        listData = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
+        listOfSuggestions.setAdapter(adapter);
     }
 
     /**
      * initierar sökningen och redovisning av resultatet
      */
-    private void initThreading() {
+    private void initiateThread() {
         guiThread = new Handler();
         suggestionThread = Executors.newSingleThreadExecutor();
 
-        updateTask = new Runnable() {
+        updater = new Runnable() {
             public void run() {
-                String original = searchText.getText().toString().trim();
+                String search = searchText.getText().toString().trim();
 
-                if (suggestionPending != null)
-                    suggestionPending.cancel(true);
+                if (search.length() != 0) {
 
-                if (original.length() != 0) {
-
-                    SearchSuggestions suggestTask = new SearchSuggestions(SearchActivity.this, original);
+                    SearchSuggestions suggestTask = new SearchSuggestions(SearchActivity.this, search);
                     suggestionPending = suggestionThread.submit(suggestTask);
-
-
                 }
             }
         };
@@ -263,11 +247,11 @@ public class SearchActivity extends AppCompatActivity {
 
     /**
      *
-     * @param delayMillis tid i millisekunder för att skapa en delay som tillåter applikationen att utföra färdigt exekveringar
+     * @param delay tid i millisekunder för att skapa en delay som tillåter applikationen att utföra färdigt exekveringar
      */
-    private void queueUpdate(long delayMillis) {
-        guiThread.removeCallbacks(updateTask);
-        guiThread.postDelayed(updateTask, delayMillis);
+    private void queueUpdate(long delay) {
+        guiThread.removeCallbacks(updater);
+        guiThread.postDelayed(updater, delay);
     }
 
     /**

@@ -127,7 +127,7 @@ public class ScheduleFragment extends Fragment {
             viewHolder.roomNr.setText(lectures.get(position).getRoomNr());
             viewHolder.teacherSignature.setText(lectures.get(position).getTeacherSignature());
             viewHolder.teacherSignature.setText(lectures.get(position).getTeacherSignature());
-            viewHolder.moment.setText(lectures.get(position).getLectureMoment());
+            viewHolder.moment.setText(lectures.get(position).getLectureDetailedInfo());
             viewHolder.date.setText(lectures.get(position).getDate());
 
             return view;

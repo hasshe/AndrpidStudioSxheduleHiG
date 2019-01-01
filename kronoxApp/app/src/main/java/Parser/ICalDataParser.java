@@ -25,6 +25,7 @@ public class ICalDataParser {
      */
     public void parseICS(){
         info = new ArrayList<>();
+        ScheduleInfo = new ScheduleInfo();
         try {
             fileRead = new FileInputStream(new File(path, "/temp/ICFile.ics"));
             InputStreamReader inputStreamRead = new InputStreamReader(fileRead);
@@ -32,7 +33,6 @@ public class ICalDataParser {
 
             String scheduleCalData;
 
-            ScheduleInfo = new ScheduleInfo();
             while((scheduleCalData = bufferRead.readLine()) != null) {
                 if(scheduleCalData.contains("DTSTART:")) {
                     ScheduleInfo.setStart(scheduleCalData.substring(scheduleCalData.lastIndexOf(":") + 1));
