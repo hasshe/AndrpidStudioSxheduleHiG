@@ -14,6 +14,10 @@ import com.example.barankazan.kronoxapp.R;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/**
+ * Klass som hanterar båda RecyclerView och CardView.
+ */
+
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
     private Context mContext;

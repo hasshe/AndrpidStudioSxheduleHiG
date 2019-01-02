@@ -23,6 +23,11 @@ import com.example.barankazan.kronoxapp.R;
 
 import java.io.File;
 
+/**
+ * Den är klassen är för till att den ska hantera båda RecyclerViewAdapter och Databasehelper, så att
+ * man kan se olika schemat genom CardView som sparas i databasen.
+ */
+
 public class DatabaseFragment extends Fragment {
 
     static SQLiteDatabase mDatabase;
