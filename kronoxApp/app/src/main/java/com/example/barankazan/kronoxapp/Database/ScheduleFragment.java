@@ -1,9 +1,14 @@
 package com.example.barankazan.kronoxapp.Database;
 
+import android.app.DownloadManager;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -13,7 +18,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.barankazan.kronoxapp.LoadingScreen;
 import com.example.barankazan.kronoxapp.R;
+
+import java.io.File;
 
 public class ScheduleFragment extends Fragment {
 
@@ -21,6 +29,7 @@ public class ScheduleFragment extends Fragment {
     RecyclerView recyclerView;
     static RecyclerViewAdapter mAdapter;
     CoordinatorLayout coordinatorLayout;
+    DownloadManager downloadManager;
 
     /**
      * Metoden körs när fragment blir framkallad. Hämtar själva layout den behöver, skapar ny instans av
@@ -40,7 +49,7 @@ public class ScheduleFragment extends Fragment {
         mDatabase = DatabaseHelper.getWritableDatabase();
 
         recyclerView = v.findViewById(R.id.recyclerView);
-        mAdapter = new RecyclerViewAdapter(getActivity(), getAllItems());
+        mAdapter = new RecyclerViewAdapter(getActivity(), getAllItems(), this);
         recyclerView.setAdapter(mAdapter);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -67,8 +76,6 @@ public class ScheduleFragment extends Fragment {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_NAME, name);
         cv.put(DatabaseHelper.COLUMN_URL, URL);
-        Log.d("Hello2", name);
-        Log.d("Hello2", URL);
 
         mDatabase.insert(DatabaseHelper.DATABASE_TABLE, null, cv);
         mAdapter.swapCursor(getAllItems());
@@ -97,5 +104,23 @@ public class ScheduleFragment extends Fragment {
                 null,
                 DatabaseHelper.COLUMN_NAME + " ASC"
         );
+    }
+
+    public void openSchedule(String URL){
+        Intent intent = new Intent(getActivity(), LoadingScreen.class);
+
+        Uri calURI = Uri.parse(URL);
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        File file = new File(path + "/temp/ICFile.ics");
+        downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+        file.delete();
+        DownloadManager.Request request = new DownloadManager.Request(calURI);
+        request.setTitle("ICFile");
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "temp/ICFile.ics");
+
+        downloadManager.enqueue(request);
+
+        startActivity(intent);
     }
 }

@@ -1,7 +1,11 @@
 package com.example.barankazan.kronoxapp.Database;
 
+import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +14,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.barankazan.kronoxapp.LoadingScreen;
 import com.example.barankazan.kronoxapp.R;
+
+import java.io.File;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
     private Context mContext;
     private Cursor mCursor;
+    ScheduleFragment mScheduleFragment;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -34,13 +42,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     /**
-     * Konstruktor som tar emot båda parameter och sparar som global variabel.
+     * Konstruktor som tar emot alla tre parameter och sparar som global variabel.
      * @param context
      * @param cursor
+     * @param scheduleFragment
      */
-    public RecyclerViewAdapter(Context context, Cursor cursor) {
+    public RecyclerViewAdapter(Context context, Cursor cursor, ScheduleFragment scheduleFragment) {
         mContext = context;
         mCursor = cursor;
+        mScheduleFragment = scheduleFragment;
     }
 
     /**
@@ -71,13 +81,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         final String name = mCursor.getString(mCursor.getColumnIndex(DatabaseHelper.COLUMN_NAME));
         final String URL = mCursor.getString(mCursor.getColumnIndex(DatabaseHelper.COLUMN_URL));
 
-        holder.nameText.setText(name);
         holder.itemView.setTag(id);
+        holder.nameText.setText(name);
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener(){
 
             public void onClick(View view){
-                Toast.makeText(mContext, URL, Toast.LENGTH_SHORT).show();
+                mScheduleFragment.openSchedule(URL);
             }
         });
     }
