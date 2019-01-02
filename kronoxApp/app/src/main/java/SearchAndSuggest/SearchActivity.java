@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -212,7 +213,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String query = (String) parent.getItemAtPosition(position);
-                gotoSchedule(query);
+                goToSchedule(query);
             }
         };
         listOfSuggestions.setOnItemClickListener(clickListener);
@@ -221,7 +222,7 @@ public class SearchActivity extends AppCompatActivity {
      *
      * @param query öppnar laddningsskärmen
      */
-    private void gotoSchedule(String query) {
+    private void goToSchedule(String query) {
         Intent intent = new Intent(SearchActivity.this, LoadingScreen.class);
         int semicolonCounter = 0;
         for(int z = 0; z < query.length(); z++) {
