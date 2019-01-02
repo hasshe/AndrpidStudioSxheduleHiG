@@ -18,7 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.barankazan.kronoxapp.LoadingScreen;
+import NavigationAndView.LoadingScreen;
 import com.example.barankazan.kronoxapp.R;
 
 import java.io.File;

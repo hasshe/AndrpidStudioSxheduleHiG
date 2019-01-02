@@ -1,4 +1,4 @@
-package Parser;
+package ParserAndModel;
 
 import android.os.Environment;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * I denna klass tolkas data i filen och returnerar det data
  */
 public class ICalDataParser {
-    public static ArrayList<ScheduleInfo> info;
+    public static ArrayList<ScheduleInfo> scheduleInfo;
     private String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
     private ScheduleInfo ScheduleInfo;
     private BufferedReader bufferRead;
@@ -24,7 +24,7 @@ public class ICalDataParser {
      * ICAL filen sparas temporärt och tolkar det data som anses vara relevant
      */
     public void parseICS(){
-        info = new ArrayList<>();
+        scheduleInfo = new ArrayList<>();
         ScheduleInfo = new ScheduleInfo();
         try {
             fileRead = new FileInputStream(new File(path, "/temp/ICFile.ics"));
@@ -62,29 +62,25 @@ public class ICalDataParser {
                                 if(!scheduleCalDataHolder[i+2].equals("Moment:")) ScheduleInfo.setSecondTeacherSignature(scheduleCalDataHolder[i+2]);
                                 else ScheduleInfo.setSecondTeacherSignature("");
                             case "Moment:":
-                                String info = "";
+                                String detailedDesc = "";
                                 for(int index = i+1; index < scheduleCalDataHolder.length; index++) {
                                     if(scheduleCalDataHolder[index].equals("Aktivitetstyp:") == false)
-                                        info += scheduleCalDataHolder[index] + " ";
+                                        detailedDesc += scheduleCalDataHolder[index] + " ";
                                     if(scheduleCalDataHolder[index].equals("Aktivitetstyp:"))
                                         index = scheduleCalDataHolder.length;
                                 }
-                                ScheduleInfo.setLectureInfo(info);
+                                ScheduleInfo.setLectureInfo(detailedDesc);
                         }
                     }
                 }
-
-
                 if(scheduleCalData.contains("LOCATION:")) {
                     ScheduleInfo.setRoomNr(scheduleCalData.substring(scheduleCalData.lastIndexOf(":")+1));
                 }
 
                 if(scheduleCalData.equals("END:VEVENT") && ScheduleInfo != null) {
-                    info.add(ScheduleInfo);
+                    scheduleInfo.add(ScheduleInfo);
                     ScheduleInfo = new ScheduleInfo();
                 }
-
-
             }
 
         } catch(IOException e) {
@@ -93,11 +89,11 @@ public class ICalDataParser {
 
     /**
      *
-     * @return array med info om schemat
+     * @return array med scheduleInfo om schemat
      */
-    public ArrayList<ScheduleInfo> getInfoList(){
+    public ArrayList<ScheduleInfo> getScheduleInfoList(){
 
-        return info;
+        return scheduleInfo;
     }
 }
 

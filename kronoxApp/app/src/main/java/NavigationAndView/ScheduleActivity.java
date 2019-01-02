@@ -1,7 +1,9 @@
-package com.example.barankazan.kronoxapp;
+package NavigationAndView;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import com.example.barankazan.kronoxapp.R;
 
 /**
  * Aktivitet som endast består av schemats utseende

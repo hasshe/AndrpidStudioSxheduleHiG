@@ -17,19 +17,19 @@
         android:theme="@style/ApDef">
         <activity
             android:name="SearchAndSuggest.SearchActivity"
-            android:parentActivityName="Navigation.MainActivity"
+            android:parentActivityName="NavigationAndView.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ApDef"></activity>
         <activity
-            android:name=".ScheduleActivity"
+            android:name="NavigationAndView.ScheduleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ApDef"></activity>
         <activity
-            android:name=".LoadingScreen"
+            android:name="NavigationAndView.LoadingScreen"
             android:screenOrientation="portrait"
             android:theme="@style/ApDef"></activity>
         <activity
-            android:name="Navigation.MainActivity"
+            android:name="NavigationAndView.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Dark.Theme">
             <intent-filter>

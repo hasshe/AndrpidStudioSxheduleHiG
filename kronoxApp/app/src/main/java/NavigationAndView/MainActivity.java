@@ -1,4 +1,4 @@
-package Navigation;
+package NavigationAndView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import com.example.barankazan.kronoxapp.Database.DatabaseFragment;
 import com.example.barankazan.kronoxapp.R;
 
-import Fragments.HomeFragment;
 import SearchAndSuggest.SearchActivity;
 import Settings.SettingsActivity;
 

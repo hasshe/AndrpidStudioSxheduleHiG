@@ -1,4 +1,4 @@
-package Parser;
+package ParserAndModel;
 
 /**
  * Modellen för vad som behövs för en lektion/bokat evenemang
@@ -74,7 +74,7 @@ public class ScheduleInfo {
         setStartTime();
     }
     /**
-     * Här hanteras biten "DTSTART" och tar tiden i hh:mm
+     * Här hanteras data från setStart så att tiden visas i hh:mm
      */
     public void setStartTime() {
         int firstPart = Integer.parseInt(start.substring(start.lastIndexOf("T") + 1, start.lastIndexOf("Z")-4)) + 1;
@@ -91,7 +91,7 @@ public class ScheduleInfo {
     }
 
     /**
-     * Här hanteras biten "DTSTOP" och tar tiden i hh:mm
+     * Här hanteras data från setStop så att tiden visas i hh:mm
      */
     public void setStopTime() {
         int firstPart = Integer.parseInt(stop.substring(stop.lastIndexOf("T") + 1, stop.lastIndexOf("Z")-4)) + 1;

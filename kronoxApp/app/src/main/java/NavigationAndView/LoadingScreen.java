@@ -1,10 +1,12 @@
-package com.example.barankazan.kronoxapp;
+package NavigationAndView;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+
+import com.example.barankazan.kronoxapp.R;
 
 /**
  * Laddningsskärm som anropas vid öppning av ett schema

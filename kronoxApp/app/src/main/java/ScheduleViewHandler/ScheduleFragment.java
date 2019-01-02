@@ -1,4 +1,4 @@
-package Fragments;
+package ScheduleViewHandler;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -8,25 +8,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.barankazan.kronoxapp.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import Parser.ICalDataParser;
-import Parser.ScheduleInfo;
+import ParserAndModel.ICalDataParser;
+import ParserAndModel.ScheduleInfo;
 
 /**
- * Fragment som hanterar vad för data läggs till i vilken view-element
+ * Fragment som hanterar vad för data läggs till i vilket view-element
  */
 public class ScheduleFragment extends Fragment {
     private ListView scheduleList;
     private ArrayList<ScheduleInfo> lectures;
     private ListModellingAdapter adapter;
     private ArrayList<ScheduleInfo> list;
-    private SimpleDateFormat dateFormat;
     private ICalDataParser parser;
 
     /**
@@ -49,43 +46,6 @@ public class ScheduleFragment extends Fragment {
         adapter.notifyDataSetChanged();
         return mView;
     }
-
-    /**
-     * Hämtar de lektioner som finns bokade
-     */
-    public void getLectures() {
-        lectures.clear();
-        for(ScheduleInfo info : list) {
-            lectures.add(info);
-
-        }
-    }
-
-    /**
-     * Hämtar en lista från parsern med data från ICAL filen
-     */
-    public void setList() {
-
-        list.clear();
-        list.addAll(parser.getInfoList());
-    }
-
-    /**
-     * Initierar hanteringen av data
-     */
-    public void initItems() {
-        parser = new ICalDataParser();
-        parser.parseICS();
-
-        list = new ArrayList<>();
-
-        setList();
-        lectures = new ArrayList<>();
-        getLectures();
-
-        adapter = new ListModellingAdapter();
-    }
-
 
     /**
      * Ändrar hur varje element i listan ser ut och vad som kan finnas i ett element i listan
@@ -146,22 +106,58 @@ public class ScheduleFragment extends Fragment {
 
             return view;
         }
+    }
+    /**
+     * Hämtar en lista från parsern med data från ICAL filen
+     */
+    public void setList() {
 
-        /**
-         * hanterar vilka views som finns via dess ID
-         */
-        private class ViewHolder {
-            TextView startTime, stopTime, courseName, roomNr, teacherSignature, moment, date;
+        list.clear();
+        list.addAll(parser.getScheduleInfoList());
+    }
+    /**
+     * Hämtar de lektioner som finns bokade
+     */
+    public void getLectures() {
+        lectures.clear();
+        for(ScheduleInfo lectures : list) {
+            this.lectures.add(lectures);
 
-            public ViewHolder(View view) {
-                startTime =  view.findViewById(R.id.start_time);
-                stopTime =  view.findViewById(R.id.stop_time);
-                courseName =  view.findViewById(R.id.course_name);
-                roomNr =  view.findViewById(R.id.room);
-                teacherSignature =  view.findViewById(R.id.teacher);
-                moment = view.findViewById(R.id.moment);
-                date = view.findViewById(R.id.dateField);
-            }
         }
+    }
+    /**
+     * Initierar tolkning av data i parser klassen
+     */
+    public void initItems() {
+        parser = new ICalDataParser();
+        parser.parseICS();
+        initList();
+    }
+
+    /**
+     * initierar en ny arraylist med data från parsern
+     */
+    public void initList() {
+    list = new ArrayList<>();
+
+    setList();
+    initLectures();
+}
+
+    /**
+     * initierar en arraylist av de lektioner som hittades
+     */
+    public void initLectures() {
+
+        lectures = new ArrayList<>();
+        getLectures();
+        initAdapter();
+    }
+
+    /**
+     * initierar modelleringen av listan
+     */
+    public void initAdapter() {
+        adapter = new ListModellingAdapter();
     }
 }

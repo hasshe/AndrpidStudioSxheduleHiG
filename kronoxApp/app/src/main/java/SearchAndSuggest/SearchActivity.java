@@ -22,7 +22,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 
 import com.example.barankazan.kronoxapp.Database.DatabaseFragment;
-import com.example.barankazan.kronoxapp.LoadingScreen;
+import NavigationAndView.LoadingScreen;
 import com.example.barankazan.kronoxapp.R;
 
 import java.io.File;

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".ScheduleActivity"
+    tools:context="NavigationAndView.ScheduleActivity"
     xmlns:tools="http://schemas.android.com/tools"
     android:theme="@style/ApDef">
 
@@ -22,7 +22,7 @@
         android:id="@+id/schedule"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        class="Fragments.ScheduleFragment"
+        class="ScheduleViewHandler.ScheduleFragment"
         tools:layout="@layout/fragment_schedule"
         android:theme="@style/ApDef"/>
 
