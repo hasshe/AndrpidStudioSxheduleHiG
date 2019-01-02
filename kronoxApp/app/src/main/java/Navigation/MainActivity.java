@@ -18,6 +18,11 @@ import Fragments.HomeFragment;
 import SearchAndSuggest.SearchActivity;
 import Settings.SettingsActivity;
 
+/**
+ * Första som klassen körs när appen öppnas, den skötter också om navigatorn
+ * så att när man klickar på nån utav alternativen så ska den ändra activity eller fragment.
+ */
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
 

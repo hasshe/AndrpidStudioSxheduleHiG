@@ -4,6 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * Tar hand om databasen för att skapa databasen, uppgradera veriosnen, lägga till data,
+ * hämta data, radera data och allt annat.
+ */
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "Schedule.db";

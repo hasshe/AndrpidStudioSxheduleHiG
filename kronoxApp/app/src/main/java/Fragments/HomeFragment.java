@@ -12,6 +12,10 @@ import android.widget.Toast;
 
 import com.example.barankazan.kronoxapp.R;
 
+/**
+ * Startsidan för appen med mock knapp.
+ */
+
 public class HomeFragment extends Fragment {
 
     /**
