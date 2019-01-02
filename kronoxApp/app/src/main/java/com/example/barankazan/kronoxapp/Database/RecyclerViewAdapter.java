@@ -1,23 +1,18 @@
 package com.example.barankazan.kronoxapp.Database;
 
-import android.app.DownloadManager;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.barankazan.kronoxapp.LoadingScreen;
 import com.example.barankazan.kronoxapp.R;
 
-import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
@@ -28,7 +23,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public RelativeLayout parentLayout;
-        public TextView nameText;
+        public TextView nameText, todayDate;
 
         /**
          * Konstruktor som hittar båda TextView och RelativeLayout för att spara som global variabel.
@@ -38,6 +33,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             super(itemView);
             nameText = itemView.findViewById(R.id.txtName);
             parentLayout = itemView.findViewById(R.id.relativeLayout);
+            todayDate = itemView.findViewById(R.id.dateToday);
         }
     }
 
@@ -81,8 +77,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         final String name = mCursor.getString(mCursor.getColumnIndex(DatabaseHelper.COLUMN_NAME));
         final String URL = mCursor.getString(mCursor.getColumnIndex(DatabaseHelper.COLUMN_URL));
 
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+
         holder.itemView.setTag(id);
         holder.nameText.setText(name);
+        holder.todayDate.setText(timeStamp);
 
         holder.parentLayout.setOnClickListener(new View.OnClickListener(){
 

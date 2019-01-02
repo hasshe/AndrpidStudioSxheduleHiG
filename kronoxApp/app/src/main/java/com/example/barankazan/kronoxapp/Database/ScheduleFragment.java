@@ -47,7 +47,6 @@ public class ScheduleFragment extends Fragment {
 
         DatabaseHelper DatabaseHelper = new DatabaseHelper(getActivity());
         mDatabase = DatabaseHelper.getWritableDatabase();
-       // mDatabase = DatabaseHelper.getReadableDatabase();
 
         recyclerView = v.findViewById(R.id.recyclerView);
         mAdapter = new RecyclerViewAdapter(getActivity(), getAllItems(), this);

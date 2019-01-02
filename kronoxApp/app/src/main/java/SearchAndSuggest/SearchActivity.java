@@ -172,20 +172,6 @@ public class SearchActivity extends AppCompatActivity {
         downloadManager.enqueue(request);
     }
 
-    public void downloadScheduleDB(String url) {
-        Uri calURI = Uri.parse(url);
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-        File file = new File(path + "/temp/ICFile.ics");
-        downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-        file.delete();
-        DownloadManager.Request request = new DownloadManager.Request(calURI);
-        request.setTitle("ICFile");
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "temp/ICFile.ics");
-
-        downloadManager.enqueue(request);
-    }
-
     /**
      * lista som består av alternativen
      */
