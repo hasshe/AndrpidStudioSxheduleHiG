@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -111,19 +112,19 @@ public class SearchActivity extends AppCompatActivity {
         if(toggle == 1) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p." + searchCode;
-            ScheduleFragment.addItem("Hello", scheduleURL);
+            ScheduleFragment.addItem(searchCode, scheduleURL);
             return scheduleURL;
         }
         else if(toggle == 2) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=s." + searchCode;
-            ScheduleFragment.addItem("Hello", scheduleURL);
+            ScheduleFragment.addItem(searchCode, scheduleURL);
             return scheduleURL;
         }
         else if(toggle == 3) {
             String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=k." + searchCode;
-            ScheduleFragment.addItem("Hello", scheduleURL);
+            ScheduleFragment.addItem(searchCode, scheduleURL);
             return scheduleURL;
         }
          return null;

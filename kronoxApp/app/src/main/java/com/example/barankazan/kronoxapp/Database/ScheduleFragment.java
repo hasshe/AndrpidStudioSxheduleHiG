@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 
 import com.example.barankazan.kronoxapp.R;
 
-public class DatabaseFragment extends Fragment {
+public class ScheduleFragment extends Fragment {
 
     static SQLiteDatabase mDatabase;
     RecyclerView recyclerView;
@@ -68,6 +68,8 @@ public class DatabaseFragment extends Fragment {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_NAME, name);
         cv.put(DatabaseHelper.COLUMN_URL, URL);
+        Log.d("Hello2", name);
+        Log.d("Hello2", URL);
 
         mDatabase.insert(DatabaseHelper.DATABASE_TABLE, null, cv);
         mAdapter.swapCursor(getAllItems());
