@@ -12,10 +12,13 @@ import android.widget.Toast;
 
 import com.example.barankazan.kronoxapp.R;
 
+import SearchAndSuggest.SearchActivity;
+
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
 
     private Context mContext;
     private Cursor mCursor;
+    SearchActivity sa;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -77,6 +80,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.parentLayout.setOnClickListener(new View.OnClickListener(){
 
             public void onClick(View view){
+               // sa = new SearchActivity();
+              //  sa.downloadScheduleDB(URL);
+                String url = URL;
+                //sa.downloadScheduleDB(url);
                 Toast.makeText(mContext, URL, Toast.LENGTH_SHORT).show();
             }
         });
