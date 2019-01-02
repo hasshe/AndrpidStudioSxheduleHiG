@@ -26,6 +26,14 @@ public class ScheduleFragment extends Fragment {
     private SimpleDateFormat dateFormat;
     private ICalDataParser parser;
 
+    /**
+     * Körs när fragment blir framkallad första gången.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_schedule, container, false);

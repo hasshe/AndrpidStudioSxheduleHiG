@@ -23,7 +23,7 @@ import com.example.barankazan.kronoxapp.R;
 
 import java.io.File;
 
-public class ScheduleFragment extends Fragment {
+public class DatabaseFragment extends Fragment {
 
     static SQLiteDatabase mDatabase;
     RecyclerView recyclerView;
@@ -106,6 +106,10 @@ public class ScheduleFragment extends Fragment {
         );
     }
 
+    /**
+     * Tar emot URL länk för att öppna själva schemat i en annan activity.
+     * @param URL
+     */
     public void openSchedule(String URL){
         Intent intent = new Intent(getActivity(), LoadingScreen.class);
 

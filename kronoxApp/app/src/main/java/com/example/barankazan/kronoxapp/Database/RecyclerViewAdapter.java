@@ -18,7 +18,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private Context mContext;
     private Cursor mCursor;
-    ScheduleFragment mScheduleFragment;
+    DatabaseFragment mDatabaseFragment;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -41,12 +41,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      * Konstruktor som tar emot alla tre parameter och sparar som global variabel.
      * @param context
      * @param cursor
-     * @param scheduleFragment
+     * @param databaseFragment
      */
-    public RecyclerViewAdapter(Context context, Cursor cursor, ScheduleFragment scheduleFragment) {
+    public RecyclerViewAdapter(Context context, Cursor cursor, DatabaseFragment databaseFragment) {
         mContext = context;
         mCursor = cursor;
-        mScheduleFragment = scheduleFragment;
+        mDatabaseFragment = databaseFragment;
     }
 
     /**
@@ -62,8 +62,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     /**
-     * Ställer in namn och ID för CardView, det innehåller även onClick metod som reagerar när en av
-     * CardView är inklickad.
+     * Ställer in namn och ID för CardView, det innehåller även onClick metod som öppnar själva schemat när man
+     * klickar på CardView.
      * @param holder
      * @param position
      */
@@ -86,7 +86,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.parentLayout.setOnClickListener(new View.OnClickListener(){
 
             public void onClick(View view){
-                mScheduleFragment.openSchedule(URL);
+                mDatabaseFragment.openSchedule(URL);
             }
         });
     }

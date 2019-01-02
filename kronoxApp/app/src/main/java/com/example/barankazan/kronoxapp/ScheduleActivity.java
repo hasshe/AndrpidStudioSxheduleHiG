@@ -4,6 +4,12 @@ import android.app.Activity;
 import android.os.Bundle;
 
 public class ScheduleActivity extends Activity {
+
+    /**
+     * Körs när activity blir andropad
+     * @param savedInstanceState
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
