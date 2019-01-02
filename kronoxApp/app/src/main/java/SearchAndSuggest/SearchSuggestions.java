@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Klass som hanterar sökfältets input via kronox Ajax tjänst
+ */
 public class SearchSuggestions implements Runnable {
     private SearchActivity suggest;
     private String searchFieldInput;
@@ -30,6 +33,9 @@ public class SearchSuggestions implements Runnable {
         this.searchFieldInput = searchFieldInput;
     }
 
+    /**
+     * Startar igång autofyll funktionerna
+     */
     @Override
     public void run() {
         List<String> suggestions = null;

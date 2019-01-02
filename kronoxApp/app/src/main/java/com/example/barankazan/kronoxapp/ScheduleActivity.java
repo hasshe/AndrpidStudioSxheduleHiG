@@ -3,6 +3,9 @@ package com.example.barankazan.kronoxapp;
 import android.app.Activity;
 import android.os.Bundle;
 
+/**
+ * Aktivitet som endast består av schemats utseende
+ */
 public class ScheduleActivity extends Activity {
 
     /**

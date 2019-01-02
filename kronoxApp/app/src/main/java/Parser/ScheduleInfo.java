@@ -1,7 +1,7 @@
 package Parser;
 
 /**
- * Modellen för vad som behövs för en lektion
+ * Modellen för vad som behövs för en lektion/bokat evenemang
  */
 
 public class ScheduleInfo {

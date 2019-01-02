@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
+/**
+ * Laddningsskärm som anropas vid öppning av ett schema
+ */
 public class LoadingScreen extends AppCompatActivity {
 
     /**

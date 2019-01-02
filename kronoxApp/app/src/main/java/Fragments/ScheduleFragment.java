@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import Parser.ICalDataParser;
 import Parser.ScheduleInfo;
 
+/**
+ * Fragment som hanterar vad för data läggs till i vilken view-element
+ */
 public class ScheduleFragment extends Fragment {
     private ListView scheduleList;
     private ArrayList<ScheduleInfo> lectures;
@@ -74,7 +77,6 @@ public class ScheduleFragment extends Fragment {
         parser = new ICalDataParser();
         parser.parseICS();
 
-        dateFormat = new SimpleDateFormat("yyyyMMdd");
         list = new ArrayList<>();
 
         setList();
@@ -90,6 +92,10 @@ public class ScheduleFragment extends Fragment {
      */
 
     class ListModellingAdapter extends BaseAdapter {
+        /**
+         *
+         * @return antalet lektioner
+         */
 
         @Override
         public int getCount() {
@@ -111,7 +117,7 @@ public class ScheduleFragment extends Fragment {
 
         /**
          *
-         * @param position var de ligger
+         * @param position var de oliks views ligger
          * @param view vad som läggs till var i listans element
          * @param parent vilken lista som ska modelleras
          * @return data som lagts till i listan

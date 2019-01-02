@@ -32,6 +32,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+/**
+ * Denna klass hanterar generering av URL för sökning av ett schema samt det temporära sparandet av
+ * schemat för senare tolkning
+ */
 public class SearchActivity extends AppCompatActivity {
     private static int permission_request_code = 1;
     private String[] mPermission = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE,
@@ -51,6 +55,10 @@ public class SearchActivity extends AppCompatActivity {
 
     public int toggle = 0;
 
+    /**
+     * Metod som anropas först vid instansiering/anrop av klassen
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
