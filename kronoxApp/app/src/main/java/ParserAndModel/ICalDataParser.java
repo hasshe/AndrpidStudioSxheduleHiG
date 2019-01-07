@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * I denna klass tolkas data i filen och returnerar det data
  */
 public class ICalDataParser {
+
     public static ArrayList<ScheduleInfo> scheduleInfo;
     private String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
     private ScheduleInfo ScheduleInfo;
@@ -77,7 +78,7 @@ public class ICalDataParser {
                     ScheduleInfo.setRoomNr(scheduleCalData.substring(scheduleCalData.lastIndexOf(":")+1));
                 }
 
-                if(scheduleCalData.equals("END:VEVENT") && ScheduleInfo != null) {
+                if(scheduleCalData.equals("END:VEVENT")) {
                     scheduleInfo.add(ScheduleInfo);
                     ScheduleInfo = new ScheduleInfo();
                 }

@@ -60,7 +60,6 @@ public class SearchSuggestions implements Runnable {
 
         List<String> messages = new LinkedList<>();
 
-
             String inputDataSearch = URLEncoder.encode(searchFieldInput, "UTF-8");
             if(suggest.toggle == 1) {
                 URL url = new URL(
