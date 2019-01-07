@@ -38,7 +38,7 @@ import NavigationAndView.LoadingScreen;
 public class SearchActivity extends AppCompatActivity {
 
     private Handler guiThreadingHandler;
-    private ExecutorService suggestionThread;
+    private ExecutorService suggestionThreading;
     private Runnable updater;
     private DownloadManager downloadManager;
 
@@ -242,16 +242,15 @@ public class SearchActivity extends AppCompatActivity {
      */
     private void initiateThread() {
         guiThreadingHandler = new Handler();
-        suggestionThread = Executors.newSingleThreadExecutor();
+        suggestionThreading = Executors.newSingleThreadExecutor();
 
         updater = new Runnable() {
             public void run() {
                 String searchFieldText = searchText.getText().toString().trim();
 
                 if (searchFieldText.length() != 0) {
-
                     SearchSuggestions suggestTask = new SearchSuggestions(SearchActivity.this, searchFieldText);
-                    suggestionThread.submit(suggestTask);
+                    suggestionThreading.submit(suggestTask);
                 }
             }
         };
