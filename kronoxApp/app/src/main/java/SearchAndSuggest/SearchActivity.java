@@ -37,9 +37,6 @@ import NavigationAndView.LoadingScreen;
  */
 public class SearchActivity extends AppCompatActivity {
 
-    private ListView listOfSuggestions;
-    private EditText searchText;
-
     private Handler guiThreadingHandler;
     private ExecutorService suggestionThread;
     private Runnable updater;
@@ -54,6 +51,8 @@ public class SearchActivity extends AppCompatActivity {
     private String startDate = "idag";
     private String searchCode = "";
 
+    private ListView listOfSuggestions;
+    private EditText searchText;
     public int toggle = 0;
 
     /**
@@ -177,7 +176,6 @@ public class SearchActivity extends AppCompatActivity {
         request.setTitle("ICFile");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "temp/ICFile.ics");
-
         downloadManager.enqueue(request);
     }
 
@@ -219,11 +217,11 @@ public class SearchActivity extends AppCompatActivity {
      */
     private void goToSchedule(String suggestFieldItem) {
         Intent intent = new Intent(SearchActivity.this, LoadingScreen.class);
-        int semicolonCounter = 0;
+        int counter = 0;
         for(int z = 0; z < suggestFieldItem.length(); z++) {
-            if(suggestFieldItem.charAt(z) == ':' && semicolonCounter != 1) {
+            if(suggestFieldItem.charAt(z) == ':' && counter != 1) {
                 searchCode = suggestFieldItem.substring(0, z);
-                semicolonCounter++;
+                counter++;
             }
         }
         downloadSchedule();
