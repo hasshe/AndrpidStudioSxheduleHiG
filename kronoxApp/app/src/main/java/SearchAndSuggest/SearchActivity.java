@@ -13,7 +13,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,7 +21,6 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 
 import com.example.barankazan.kronoxapp.Database.DatabaseFragment;
-import NavigationAndView.LoadingScreen;
 import com.example.barankazan.kronoxapp.R;
 
 import java.io.File;
@@ -30,23 +28,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+
+import NavigationAndView.LoadingScreen;
 
 /**
  * Denna klass hanterar generering av URL för sökning av ett schema samt det temporära sparandet av
  * schemat för senare tolkning
  */
 public class SearchActivity extends AppCompatActivity {
-    private static int permission_request_code = 1;
     private String[] mPermission = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private ListView listOfSuggestions;
     private EditText searchText;
-    private Handler guiThread;
+    private Handler guiThreadingHandler;
     private ExecutorService suggestionThread;
     private Runnable updater;
-    private Future<?> suggestionPending;
     private List<String> listData;
     private ArrayAdapter<String> adapter;
     private DownloadManager downloadManager;
@@ -80,7 +77,7 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == permission_request_code) {
+        if (requestCode == 1) {
             if (grantResults.length == 4 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED &&
@@ -93,7 +90,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     /**
-     * Frågar efter tillåtelse
+     * Hanterar tillåtelser
      */
     private void requestPermissions() {
             if (ActivityCompat.checkSelfPermission(this, mPermission[0])
@@ -106,7 +103,7 @@ public class SearchActivity extends AppCompatActivity {
                             != PackageManager.PERMISSION_GRANTED) {
 
                 ActivityCompat.requestPermissions(this,
-                        mPermission, permission_request_code);
+                        mPermission, 1);
             } else {
 
         }
@@ -167,12 +164,12 @@ public class SearchActivity extends AppCompatActivity {
      * Temporärt laddar ned det valda schemat för tolkning
      */
     public void downloadSchedule() {
-        Uri calURI = Uri.parse(generateURL());
+        Uri uri = Uri.parse(generateURL());
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
         File file = new File(path + "/temp/ICFile.ics");
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         file.delete();
-        DownloadManager.Request request = new DownloadManager.Request(calURI);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setTitle("ICFile");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "temp/ICFile.ics");
@@ -206,22 +203,22 @@ public class SearchActivity extends AppCompatActivity {
         AdapterView.OnItemClickListener clickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String query = (String) parent.getItemAtPosition(position);
-                goToSchedule(query);
+                String suggestFieldItem = (String) parent.getItemAtPosition(position);
+                goToSchedule(suggestFieldItem);
             }
         };
         listOfSuggestions.setOnItemClickListener(clickListener);
     }
     /**
-     *
-     * @param query öppnar laddningsskärmen
+     *Parsar data från det valda data från sökfältets resultat för att få fram koden till kurs/lärare/program
+     * @param suggestFieldItem valda data från resultatet av sökningen
      */
-    private void goToSchedule(String query) {
+    private void goToSchedule(String suggestFieldItem) {
         Intent intent = new Intent(SearchActivity.this, LoadingScreen.class);
         int semicolonCounter = 0;
-        for(int z = 0; z < query.length(); z++) {
-            if(query.charAt(z) == ':' && semicolonCounter != 1) {
-                searchCode = query.substring(0, z);
+        for(int z = 0; z < suggestFieldItem.length(); z++) {
+            if(suggestFieldItem.charAt(z) == ':' && semicolonCounter != 1) {
+                searchCode = suggestFieldItem.substring(0, z);
                 semicolonCounter++;
             }
         }
@@ -239,20 +236,20 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     /**
-     * initierar sökningen och redovisning av resultatet
+     * initierar trådningen för sökningen och redovisning av resultatet
      */
     private void initiateThread() {
-        guiThread = new Handler();
+        guiThreadingHandler = new Handler();
         suggestionThread = Executors.newSingleThreadExecutor();
 
         updater = new Runnable() {
             public void run() {
-                String search = searchText.getText().toString().trim();
+                String searchFieldText = searchText.getText().toString().trim();
 
-                if (search.length() != 0) {
+                if (searchFieldText.length() != 0) {
 
-                    SearchSuggestions suggestTask = new SearchSuggestions(SearchActivity.this, search);
-                    suggestionPending = suggestionThread.submit(suggestTask);
+                    SearchSuggestions suggestTask = new SearchSuggestions(SearchActivity.this, searchFieldText);
+                    suggestionThread.submit(suggestTask);
                 }
             }
         };
@@ -263,8 +260,8 @@ public class SearchActivity extends AppCompatActivity {
      * @param delay tid i millisekunder för att skapa en delay som tillåter applikationen att utföra färdigt exekveringar
      */
     private void queueUpdate(long delay) {
-        guiThread.removeCallbacks(updater);
-        guiThread.postDelayed(updater, delay);
+        guiThreadingHandler.removeCallbacks(updater);
+        guiThreadingHandler.postDelayed(updater, delay);
     }
 
     /**
@@ -272,7 +269,7 @@ public class SearchActivity extends AppCompatActivity {
      * @param suggestions lägger till resultat i listan som skrivs ut i applikationen
      */
     public void setSuggestions(final List<String> suggestions) {
-        guiThread.post(new Runnable() {
+        guiThreadingHandler.post(new Runnable() {
             public void run() {
                 setList(suggestions);
             }
