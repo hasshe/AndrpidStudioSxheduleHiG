@@ -36,17 +36,21 @@ import NavigationAndView.LoadingScreen;
  * schemat för senare tolkning
  */
 public class SearchActivity extends AppCompatActivity {
-    private String[] mPermission = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
     private ListView listOfSuggestions;
     private EditText searchText;
+
     private Handler guiThreadingHandler;
     private ExecutorService suggestionThread;
     private Runnable updater;
+    private DownloadManager downloadManager;
+
     private List<String> listData;
     private ArrayAdapter<String> adapter;
-    private DownloadManager downloadManager;
+    private String[] mPermission = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
     private String startDate = "idag";
     private String searchCode = "";
 
