@@ -37,11 +37,14 @@ import NavigationAndView.LoadingScreen;
  */
 public class SearchActivity extends AppCompatActivity {
 
+    private String path;
+    private File file;
     private Handler guiThreadingHandler;
     private ExecutorService suggestionThreading;
     private Runnable updater;
     private DownloadManager downloadManager;
 
+    private Uri uri;
     private List<String> listData;
     private ArrayAdapter<String> adapter;
     private String[] mPermission = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE,
@@ -51,6 +54,7 @@ public class SearchActivity extends AppCompatActivity {
     private String startDate = "idag";
     private String searchCode = "";
 
+    private String scheduleURL;
     private ListView listOfSuggestions;
     private EditText searchText;
     public int toggle = 0;
@@ -118,19 +122,19 @@ public class SearchActivity extends AppCompatActivity {
      */
     public String generateURL() {
         if(toggle == 1) {
-            String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
+            scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=p." + searchCode;
             DatabaseFragment.addItem(searchCode, scheduleURL);
             return scheduleURL;
         }
         else if(toggle == 2) {
-            String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
+            scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=s." + searchCode;
             DatabaseFragment.addItem(searchCode, scheduleURL);
             return scheduleURL;
         }
         else if(toggle == 3) {
-            String scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
+            scheduleURL = "http://schema.hig.se/setup/jsp/SchemaICAL.ics?startDatum=";
             scheduleURL += startDate + "&intervallTyp=m&intervallAntal=6&sprak=SV&sokMedAND=true&forklaringar=true&resurser=k." + searchCode;
             DatabaseFragment.addItem(searchCode, scheduleURL);
             return scheduleURL;
@@ -167,9 +171,9 @@ public class SearchActivity extends AppCompatActivity {
      * Temporärt laddar ned det valda schemat för tolkning
      */
     public void downloadSchedule() {
-        Uri uri = Uri.parse(generateURL());
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-        File file = new File(path + "/temp/ICFile.ics");
+        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        uri = Uri.parse(generateURL());
+        file = new File(path + "/temp/ICFile.ics");
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         file.delete();
         DownloadManager.Request request = new DownloadManager.Request(uri);
@@ -260,8 +264,7 @@ public class SearchActivity extends AppCompatActivity {
      *
      * @param delay tid i millisekunder för att skapa en delay som tillåter applikationen att utföra färdigt exekveringar
      */
-    private void queueUpdate(long delay) {
-        guiThreadingHandler.removeCallbacks(updater);
+    private void queueUpdate(int delay) {
         guiThreadingHandler.postDelayed(updater, delay);
     }
 

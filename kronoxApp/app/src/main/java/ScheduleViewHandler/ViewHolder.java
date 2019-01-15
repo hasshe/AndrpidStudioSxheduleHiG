@@ -8,7 +8,7 @@ import com.example.barankazan.kronoxapp.R;
 /**
  * hanterar vilka views som finns via dess ID
  */
-class ViewHolder {
+public class ViewHolder {
     TextView startTime, stopTime, courseName, roomNr, teacherSignature, moment, date;
 
     public ViewHolder(View view) {

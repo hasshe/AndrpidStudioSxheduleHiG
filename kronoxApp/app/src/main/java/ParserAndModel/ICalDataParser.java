@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class ICalDataParser {
 
-    public static ArrayList<ScheduleInfo> scheduleInfo;
+    protected  ArrayList<ScheduleInfo> scheduleInfo;
     private String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
     private ScheduleInfo ScheduleInfo;
     private BufferedReader bufferRead;
@@ -60,8 +60,10 @@ public class ICalDataParser {
                                 ScheduleInfo.setCourseCode(scheduleCalDataHolder[i + 1].substring(0, scheduleCalDataHolder[i + 1].lastIndexOf("-")));
                             case "Sign:":
                                 ScheduleInfo.setTeacherSignature(scheduleCalDataHolder[i + 1]);
-                                if(!scheduleCalDataHolder[i+2].equals("Moment:")) ScheduleInfo.setSecondTeacherSignature(scheduleCalDataHolder[i+2]);
-                                else ScheduleInfo.setSecondTeacherSignature("");
+                                if(!scheduleCalDataHolder[i+2].equals("Moment:"))
+                                    ScheduleInfo.setSecondTeacherSignature(scheduleCalDataHolder[i+2]);
+                                else
+                                    ScheduleInfo.setSecondTeacherSignature("");
                             case "Moment:":
                                 String detailedDesc = "";
                                 for(int index = i+1; index < scheduleCalDataHolder.length; index++) {
@@ -74,6 +76,7 @@ public class ICalDataParser {
                         }
                     }
                 }
+
                 if(scheduleCalData.contains("LOCATION:")) {
                     ScheduleInfo.setRoomNr(scheduleCalData.substring(scheduleCalData.lastIndexOf(":")+1));
                 }
