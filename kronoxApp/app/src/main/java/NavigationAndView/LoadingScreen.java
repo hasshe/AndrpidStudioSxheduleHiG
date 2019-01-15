@@ -30,7 +30,7 @@ public class LoadingScreen extends AppCompatActivity {
             public void run() {
                 showSchedule();
             }
-        }, 2500);
+        }, 1500);
     }
 
     /**
