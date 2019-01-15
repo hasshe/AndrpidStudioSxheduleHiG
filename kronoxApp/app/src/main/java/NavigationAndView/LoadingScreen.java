@@ -14,7 +14,7 @@ import com.example.barankazan.kronoxapp.R;
 public class LoadingScreen extends AppCompatActivity {
 
     /**
-     * Anropas när ett schema väljs. Laddningsskärmen påbörjar och skapar en delay på 2.5 sekunder
+     * Anropas när ett schema väljs. Laddningsskärmen påbörjar och skapar en delay på 1.5 sekunder
      * för att tillåta schemat att laddas färdigt
      * @param savedInstanceState
      */
