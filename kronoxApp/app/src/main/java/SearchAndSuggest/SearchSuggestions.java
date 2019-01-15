@@ -13,7 +13,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -22,6 +21,9 @@ import java.util.List;
 public class SearchSuggestions implements Runnable {
     private SearchActivity suggest;
     private String searchFieldInput;
+    private JSONArray jsonArray;
+    private ArrayList<JSONObject> jsonObjectArrayList;
+    private List<String> messages;
 
     /**
      *
@@ -38,9 +40,9 @@ public class SearchSuggestions implements Runnable {
      */
     @Override
     public void run() {
-        List<String> suggestions = null;
+        messages = null;
         try {
-            suggestions = suggestionsList(searchFieldInput);
+            messages = suggestionsList(searchFieldInput);
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -48,7 +50,7 @@ public class SearchSuggestions implements Runnable {
         catch (IOException e) {
             e.printStackTrace();
         }
-        suggest.setSuggestions(suggestions);
+        suggest.setSuggestions(messages);
     }
 
     /**
@@ -57,8 +59,9 @@ public class SearchSuggestions implements Runnable {
      * @return data som hittades som matchar sökfältet
      */
     private List<String> suggestionsList(String searchFieldInput) throws JSONException, IOException {
-
-        List<String> messages = new LinkedList<>();
+        messages = null;
+        messages = new ArrayList<>();
+        jsonObjectArrayList = new ArrayList<>();
 
             String inputDataSearch = URLEncoder.encode(searchFieldInput, "UTF-8");
             if(suggest.toggle == 1) {
@@ -72,10 +75,7 @@ public class SearchSuggestions implements Runnable {
                 while((bufferLine = buffer.readLine()) != null) {
                     bufferData += bufferLine;
                 }
-
-                ArrayList<JSONObject> jsonObjectArrayList = new ArrayList<>();
-                JSONArray jsonArray = new JSONArray(bufferData);;
-
+                jsonArray = new JSONArray(bufferData);;
                 for(int i = 0; i < jsonArray.length(); i++) {
                     jsonObjectArrayList.add(jsonArray.getJSONObject(i));
                 }
@@ -97,8 +97,8 @@ public class SearchSuggestions implements Runnable {
                     bufferData += bufferLine;
                 }
 
-                ArrayList<JSONObject> jsonObjectArrayList = new ArrayList<>();
-                JSONArray jsonArray = new JSONArray(bufferData);;
+
+                jsonArray = new JSONArray(bufferData);;
 
                 for(int i = 0; i < jsonArray.length(); i++) {
                     jsonObjectArrayList.add(jsonArray.getJSONObject(i));
@@ -121,8 +121,8 @@ public class SearchSuggestions implements Runnable {
                     bufferData += bufferLine;
                 }
 
-                ArrayList<JSONObject> jsonObjectArrayList = new ArrayList<>();
-                JSONArray jsonArray = new JSONArray(bufferData);;
+
+                jsonArray = new JSONArray(bufferData);;
 
                 for(int i = 0; i < jsonArray.length(); i++) {
                     jsonObjectArrayList.add(jsonArray.getJSONObject(i));
