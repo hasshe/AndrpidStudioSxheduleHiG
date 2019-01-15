@@ -72,7 +72,7 @@ public class ICalDataParser {
                                     if(scheduleCalDataHolder[index].equals("Aktivitetstyp:"))
                                         index = scheduleCalDataHolder.length;
                                 }
-                                ScheduleInfo.setLectureInfo(detailedDesc);
+                                ScheduleInfo.setDetailedInfo(detailedDesc);
                         }
                     }
                 }

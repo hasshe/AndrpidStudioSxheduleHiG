@@ -199,7 +199,7 @@ public class SearchActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
             }
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                queueUpdate(700);
+                queueUpdate(100);
             }
             public void afterTextChanged(Editable s) {
             }

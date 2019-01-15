@@ -5,7 +5,7 @@ package ParserAndModel;
  */
 
 public class ScheduleInfo {
-    private String courseCode, programCode, lectureInfo, start, stop, date,
+    private String courseCode, programCode, detailedInfo, start, stop, date,
             startTime, stopTime, roomNr, teacherSignature, secondTeacherSignature;
 
     /**
@@ -18,11 +18,11 @@ public class ScheduleInfo {
     }
     /**
      *
-     * @param lectureInfo sätter lektionens detaljerade information
+     * @param detailedInfo sätter lektionens detaljerade information
      */
-    public void setLectureInfo(String lectureInfo) {
+    public void setDetailedInfo(String detailedInfo) {
 
-        this.lectureInfo = lectureInfo;
+        this.detailedInfo = detailedInfo;
     }
     /**
      *
@@ -31,6 +31,14 @@ public class ScheduleInfo {
     public void setProgramCode(String programCode) {
 
         this.programCode = programCode;
+    }
+
+    /**
+     *
+     * @return koden för programmet
+     */
+    public String getProgramCode() {
+        return this.programCode;
     }
 
     /**
@@ -62,6 +70,7 @@ public class ScheduleInfo {
      * @param date sätter datumet för lektionen
      */
     public void setDate(String date) {
+
         this.date = date;
     }
 
@@ -71,41 +80,25 @@ public class ScheduleInfo {
      */
     public void setStart(String start) {
         this.start = start;
-        setStartTime();
+        int hour = Integer.parseInt(start.substring(start.lastIndexOf("T") + 1, start.lastIndexOf("Z")-4)) + 1;
+        startTime = hour + ":" + start.substring(start.lastIndexOf("T") + 3, start.lastIndexOf("Z")-2);
     }
-    /**
-     * Här hanteras data från setStart så att tiden visas i hh:mm
-     */
-    public void setStartTime() {
-        int firstPart = Integer.parseInt(start.substring(start.lastIndexOf("T") + 1, start.lastIndexOf("Z")-4)) + 1;
-        startTime = firstPart + ":" + start.substring(start.lastIndexOf("T") + 3, start.lastIndexOf("Z")-2);
-    }
-
     /**
      *
      * @param stop sätter tiden då lektionen slutar
      */
     public void setStop(String stop) {
         this.stop = stop;
-        setStopTime();
+        int hour = Integer.parseInt(stop.substring(stop.lastIndexOf("T") + 1, stop.lastIndexOf("Z")-4)) + 1;
+        stopTime = hour + ":" + stop.substring(stop.lastIndexOf("T") + 3, stop.lastIndexOf("Z")-2);
     }
-
-    /**
-     * Här hanteras data från setStop så att tiden visas i hh:mm
-     */
-    public void setStopTime() {
-        int firstPart = Integer.parseInt(stop.substring(stop.lastIndexOf("T") + 1, stop.lastIndexOf("Z")-4)) + 1;
-        stopTime = firstPart + ":" + stop.substring(stop.lastIndexOf("T") + 3, stop.lastIndexOf("Z")-2);
-    }
-
-
     /**
      *
      * @return datumet lektionen tar plats
      */
     public String getDate() {
 
-        return date;
+        return this.date;
     }
     /**
      *
@@ -113,7 +106,7 @@ public class ScheduleInfo {
      */
     public String getLectureDetailedInfo() {
 
-        return lectureInfo;
+        return this.detailedInfo;
     }
 
     /**
@@ -122,7 +115,7 @@ public class ScheduleInfo {
      */
     public String getStartTime() {
 
-        return startTime;
+        return this.startTime;
     }
 
 
@@ -132,7 +125,7 @@ public class ScheduleInfo {
      */
     public String getCourseCode() {
 
-        return courseCode;
+        return this.courseCode;
     }
     /**
      *
@@ -140,7 +133,7 @@ public class ScheduleInfo {
      */
     public String getTeacherSignature() {
 
-        return teacherSignature + " " + secondTeacherSignature;
+        return this.teacherSignature + " " + this.secondTeacherSignature;
     }
     /**
      *
@@ -148,7 +141,7 @@ public class ScheduleInfo {
      */
     public String getRoomNr() {
 
-        return roomNr;
+        return this.roomNr;
     }
     /**
      *
@@ -156,7 +149,7 @@ public class ScheduleInfo {
      */
     public String getStopTime() {
 
-        return stopTime;
+        return this.stopTime;
     }
 
 }
