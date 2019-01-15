@@ -12,12 +12,12 @@ public class ViewHolder {
     TextView startTime, stopTime, courseName, roomNr, teacherSignature, moment, date;
 
     public ViewHolder(View view) {
-        startTime =  view.findViewById(R.id.start_time);
-        stopTime =  view.findViewById(R.id.stop_time);
-        courseName =  view.findViewById(R.id.course_name);
+        startTime =  view.findViewById(R.id.start);
+        stopTime =  view.findViewById(R.id.stop);
+        courseName =  view.findViewById(R.id.courseName);
         roomNr =  view.findViewById(R.id.room);
         teacherSignature =  view.findViewById(R.id.teacher);
-        moment = view.findViewById(R.id.moment);
+        moment = view.findViewById(R.id.detailData);
         date = view.findViewById(R.id.dateField);
     }
 }

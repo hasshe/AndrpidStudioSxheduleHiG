@@ -187,8 +187,8 @@ public class SearchActivity extends AppCompatActivity {
      * lista som består av alternativen
      */
     private void findViews() {
-        searchText = findViewById(R.id.search);
-        listOfSuggestions = findViewById(R.id.suggestion_list);
+        searchText = findViewById(R.id.searchHint);
+        listOfSuggestions = findViewById(R.id.suggestions);
     }
 
     /**
