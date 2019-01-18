@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -21,7 +20,7 @@
         app:srcCompat="@drawable/higlogo" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/options"
         android:layout_width="match_parent"
         android:layout_height="38dp"
         android:text="\nOptions:"
@@ -61,7 +60,7 @@
         android:padding="10dip">
 
         <AutoCompleteTextView
-            android:id="@+id/search"
+            android:id="@+id/searchHint"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:hint="Search..."
@@ -70,13 +69,13 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/suggestion_text"
+            android:id="@+id/result"
             android:layout_width="fill_parent"
             android:layout_height="37dp"
             android:text="Results:" />
 
         <ListView
-            android:id="@+id/suggestion_list"
+            android:id="@+id/suggestions"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />

@@ -7,7 +7,7 @@
     android:theme="@style/ApDef">
 
     <ListView
-        android:id="@+id/schedule_list"
+        android:id="@+id/listSchedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">

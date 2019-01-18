@@ -39,7 +39,7 @@ public class ScheduleFragment extends Fragment {
         View mView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
         initItems();
-        scheduleList = mView.findViewById(R.id.schedule_list);
+        scheduleList = mView.findViewById(R.id.listSchedule);
 
         scheduleList.setAdapter(adapter);
         getLectures();

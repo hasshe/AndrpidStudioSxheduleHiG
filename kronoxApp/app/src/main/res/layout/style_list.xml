@@ -23,7 +23,7 @@
         android:padding="10dp">
 
         <LinearLayout
-            android:id="@+id/startstoptime"
+            android:id="@+id/timeField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -34,7 +34,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/start_time"
+                android:id="@+id/start"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -43,7 +43,7 @@
                 android:textColor="#000000" />
 
             <TextView
-                android:id="@+id/stop_time"
+                android:id="@+id/stop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
@@ -53,17 +53,17 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/lectureData"
+            android:id="@+id/lectureField"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="108dp"
             android:layout_marginTop="8dp"
             android:orientation="vertical"
-            app:layout_constraintLeft_toRightOf="@id/startstoptime"
+            app:layout_constraintLeft_toRightOf="@id/timeField"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/course_name"
+                android:id="@+id/courseName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CourseName"
@@ -89,18 +89,19 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/detailData"
+            app:layout_constraintBottom_toTopOf="@+id/detailField"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <TextView
-                android:id="@+id/detailField"
+                android:id="@+id/detailedInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Detailed Information:"
@@ -108,7 +109,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/detailData"
+            android:id="@+id/detailField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
@@ -118,10 +119,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lectureData">
+            app:layout_constraintTop_toBottomOf="@+id/lectureField">
 
             <TextView
-                android:id="@+id/moment"
+                android:id="@+id/detailData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Moment" />
