@@ -23,14 +23,17 @@ public class SearchSuggestions implements Runnable {
     private String searchFieldInput;
     private JSONArray jsonArray;
     private ArrayList<JSONObject> jsonObjectArrayList;
-    private List<String> messages;
+    private List<String> list;
+    private String bufferLine = "";
+    private String bufferData = "";
+    private BufferedReader buffer;
 
     /**
      *
      * @param suggest alternativen som framställs ska vara de nuvarande alterantiv som hittats
      * @param searchFieldInput data som matas in skall vara det nuvarande inmatade data från sökfältet
      */
-    SearchSuggestions(SearchActivity suggest, String searchFieldInput) {
+   public SearchSuggestions(SearchActivity suggest, String searchFieldInput) {
         this.suggest = suggest;
         this.searchFieldInput = searchFieldInput;
     }
@@ -40,9 +43,9 @@ public class SearchSuggestions implements Runnable {
      */
     @Override
     public void run() {
-        messages = null;
+        list = null;
         try {
-            messages = suggestionsList(searchFieldInput);
+            list = suggestionsList(searchFieldInput);
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -50,7 +53,7 @@ public class SearchSuggestions implements Runnable {
         catch (IOException e) {
             e.printStackTrace();
         }
-        suggest.setSuggestions(messages);
+        suggest.setSuggestions(list);
     }
 
     /**
@@ -59,8 +62,8 @@ public class SearchSuggestions implements Runnable {
      * @return data som hittades som matchar sökfältet
      */
     private List<String> suggestionsList(String searchFieldInput) throws JSONException, IOException {
-        messages = null;
-        messages = new ArrayList<>();
+        list = null;
+        list = new ArrayList<>();
         jsonObjectArrayList = new ArrayList<>();
 
             String inputDataSearch = URLEncoder.encode(searchFieldInput, "UTF-8");
@@ -69,8 +72,9 @@ public class SearchSuggestions implements Runnable {
                         "https://kronox.hig.se/ajax/ajax_autocompleteResurser.jsp?typ=program&term="
                                 + inputDataSearch);
                 InputStream input = url.openStream();
-                BufferedReader buffer = new BufferedReader(new InputStreamReader(input));
-                String bufferLine, bufferData = "";
+                buffer = new BufferedReader(new InputStreamReader(input));
+                bufferLine = "";
+                bufferData = "";
 
                 while((bufferLine = buffer.readLine()) != null) {
                     bufferData += bufferLine;
@@ -82,16 +86,17 @@ public class SearchSuggestions implements Runnable {
 
                 for(JSONObject object : jsonObjectArrayList) {
                     String programName = object.getString("value") + ": \n" + programName(object.getString("label"));
-                    messages.add(programName);
+                    list.add(programName);
                 }
-                return messages;
+                return list;
             }else if(suggest.toggle == 2) {
                 URL url = new URL(
                         "https://kronox.hig.se/ajax/ajax_autocompleteResurser.jsp?typ=signatur&term="
                                 + inputDataSearch);
                 InputStream input = url.openStream();
-                BufferedReader buffer = new BufferedReader(new InputStreamReader(input));
-                String bufferLine, bufferData = "";
+                buffer = new BufferedReader(new InputStreamReader(input));
+                bufferLine = "";
+                bufferData = "";
 
                 while((bufferLine = buffer.readLine()) != null) {
                     bufferData += bufferLine;
@@ -106,16 +111,17 @@ public class SearchSuggestions implements Runnable {
 
                 for(JSONObject object : jsonObjectArrayList) {
                     String courseName = object.getString("value") + ": \n" + courseName( object.getString("label"));
-                    messages.add(courseName);
+                    list.add(courseName);
                 }
-                return messages;
+                return list;
             }else if(suggest.toggle == 3) {
                 URL url = new URL(
                         "https://kronox.hig.se/ajax/ajax_autocompleteResurser.jsp?typ=kurs&term="
                                 + inputDataSearch);
                 InputStream input = url.openStream();
-                BufferedReader buffer = new BufferedReader(new InputStreamReader(input));
-                String bufferLine, bufferData = "";
+                buffer = new BufferedReader(new InputStreamReader(input));
+                bufferLine = "";
+                bufferData = "";
 
                 while((bufferLine = buffer.readLine()) != null) {
                     bufferData += bufferLine;
@@ -130,12 +136,12 @@ public class SearchSuggestions implements Runnable {
 
                 for(JSONObject object : jsonObjectArrayList) {
                     String teacherName = object.getString("value") + ": \n" + teacherName( object.getString("label"));
-                    messages.add(teacherName);
+                    list.add(teacherName);
                 }
-                return messages;
+                return list;
             }
 
-        return messages;
+        return list;
     }
 
     /**

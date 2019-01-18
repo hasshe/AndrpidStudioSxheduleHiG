@@ -43,6 +43,8 @@ public class SearchActivity extends AppCompatActivity {
     private ExecutorService suggestionThreading;
     private Runnable updater;
     private DownloadManager downloadManager;
+    private SearchSuggestions suggestTask;
+    private Intent loadingIntent;
 
     private Uri uri;
     private List<String> listData;
@@ -70,7 +72,6 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         initiateThread();
-        findViews();
         setListeners();
         setAdapters();
     }
@@ -183,20 +184,16 @@ public class SearchActivity extends AppCompatActivity {
         downloadManager.enqueue(downloadRequest);
     }
 
-    private void findViews() {
-        searchText = findViewById(R.id.searchHint);
-        listOfSuggestions = findViewById(R.id.suggestions);
-    }
 
     /**
-     * Reagerar på ändringar i sökfältet. Uppdateringen sker varje sekund vid ändring av textfältet
+     * Reagerar på ändringar i sökfältet. Uppdateringen sker varje 400ms vid ändring av textfältet
      */
     private void setListeners() {
         TextWatcher textWatcher = new TextWatcher() {
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
             }
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                queueUpdate(400);
+                guiThreadingHandler.postDelayed(updater,400);
             }
             public void afterTextChanged(Editable s) {
             }
@@ -207,27 +204,19 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String suggestFieldItem = (String) parent.getItemAtPosition(position);
-                goToSchedule(suggestFieldItem);
+                loadingIntent = new Intent(SearchActivity.this, LoadingScreen.class);
+                for(int z = 0; z < suggestFieldItem.length(); z++) {
+                    if(suggestFieldItem.charAt(z) == ':') {
+                        searchCode = suggestFieldItem.substring(0, z);
+                        break;
+                    }
+                }
+                downloadSchedule();
+                startActivity(loadingIntent);
             }
         };
         listOfSuggestions.setOnItemClickListener(clickListener);
     }
-    /**
-     *Parsar data från det valda data från sökfältets resultat för att få fram koden till kurs/lärare/program
-     * @param suggestFieldItem valda data från resultatet av sökningen
-     */
-    private void goToSchedule(String suggestFieldItem) {
-        Intent intent = new Intent(SearchActivity.this, LoadingScreen.class);
-        for(int z = 0; z < suggestFieldItem.length(); z++) {
-            if(suggestFieldItem.charAt(z) == ':') {
-                searchCode = suggestFieldItem.substring(0, z);
-                break;
-            }
-        }
-        downloadSchedule();
-        startActivity(intent);
-    }
-
     /**
      * Lägger till adapters till listorna
      */
@@ -244,43 +233,32 @@ public class SearchActivity extends AppCompatActivity {
         guiThreadingHandler = new Handler();
         suggestionThreading = Executors.newSingleThreadExecutor();
 
+        searchText = findViewById(R.id.searchHint);
+        listOfSuggestions = findViewById(R.id.suggestions);
+
         updater = new Runnable() {
+            @Override
             public void run() {
                 String searchFieldText = searchText.getText().toString().trim();
 
                 if (searchFieldText.length() > 0) {
-                    SearchSuggestions suggestTask = new SearchSuggestions(SearchActivity.this, searchFieldText);
+                    suggestTask = new SearchSuggestions(SearchActivity.this, searchFieldText);
                     suggestionThreading.submit(suggestTask);
                 }
             }
         };
     }
-
     /**
      *
-     * @param delay tid i millisekunder för att skapa en delay som tillåter applikationen att utföra färdigt exekveringar
-     */
-    private void queueUpdate(int delay) {
-        guiThreadingHandler.postDelayed(updater, delay);
-    }
-
-    /**
-     *
-     * @param suggestions lägger till resultat i listan som skrivs ut i applikationen
+     * @param suggestions lägger till resultat i listan
      */
     public void setSuggestions(final List<String> suggestions) {
         guiThreadingHandler.post(new Runnable() {
+            @Override
             public void run() {
-                setList(suggestions);
+                adapter.clear();
+                adapter.addAll(suggestions);
             }
         });
-    }
-    /**
-     *
-     * @param list lägger till data till listan
-     */
-    private void setList(List<String> list) {
-        adapter.clear();
-        adapter.addAll(list);
     }
 }

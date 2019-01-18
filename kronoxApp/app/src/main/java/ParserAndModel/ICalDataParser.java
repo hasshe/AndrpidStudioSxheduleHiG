@@ -20,6 +20,7 @@ public class ICalDataParser {
     private ScheduleInfo ScheduleInfo;
     private BufferedReader bufferRead;
     private FileInputStream fileRead;
+    private int counter = 0;
 
     /**
      * ICAL filen sparas temporärt och tolkar det data som anses vara relevant
@@ -70,9 +71,14 @@ public class ICalDataParser {
                                     if(scheduleCalDataHolder[index].equals("Aktivitetstyp:") == false)
                                         detailedDesc += scheduleCalDataHolder[index] + " ";
                                     if(scheduleCalDataHolder[index].equals("Aktivitetstyp:"))
-                                        index = scheduleCalDataHolder.length;
+                                        break;
+                                    if(scheduleCalDataHolder[index].equals("Aktivitetstyp:") && detailedDesc.equals("")) {
+                                        ScheduleInfo.setDetailedInfo("No Info Given...");
+                                        counter++;
+                                    }
                                 }
-                                ScheduleInfo.setDetailedInfo(detailedDesc);
+                                if(counter < 1)
+                                    ScheduleInfo.setDetailedInfo(detailedDesc);
                         }
                     }
                 }

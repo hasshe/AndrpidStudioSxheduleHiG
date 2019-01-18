@@ -12,7 +12,7 @@ import com.example.barankazan.kronoxapp.R;
  * Laddningsskärm som anropas vid öppning av ett schema
  */
 public class LoadingScreen extends AppCompatActivity {
-
+    private Intent intent;
     /**
      * Anropas när ett schema väljs. Laddningsskärmen påbörjar och skapar en delay på 1.5 sekunder
      * för att tillåta schemat att laddas färdigt
@@ -37,7 +37,7 @@ public class LoadingScreen extends AppCompatActivity {
      * Ny instans av intent som kör igång ScheduleActivity samt avslutar laddningen
      */
     public void showSchedule() {
-        Intent intent = new Intent(LoadingScreen.this, ScheduleActivity.class);
+        intent = new Intent(LoadingScreen.this, ScheduleActivity.class);
         startActivity(intent);
         finish();
     }
