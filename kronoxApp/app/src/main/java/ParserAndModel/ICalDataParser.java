@@ -60,8 +60,8 @@ public class ICalDataParser {
                                 ScheduleInfo.setCourseCode(scheduleCalDataHolder[i + 1].substring(0, scheduleCalDataHolder[i + 1].lastIndexOf("-")));
                             case "Sign:":
                                 ScheduleInfo.setTeacherSignature(scheduleCalDataHolder[i + 1]);
-                                if(!scheduleCalDataHolder[i+2].equals("Moment:"))
-                                    ScheduleInfo.setSecondTeacherSignature(scheduleCalDataHolder[i+2]);
+                                if(!scheduleCalDataHolder[i+2].equals("Moment:") && !scheduleCalDataHolder[i+2].equalsIgnoreCase("tentamen"))
+                                    ScheduleInfo.setSecondTeacherSignature(", " + scheduleCalDataHolder[i+2]);
                                 else
                                     ScheduleInfo.setSecondTeacherSignature("");
                             case "Moment:":

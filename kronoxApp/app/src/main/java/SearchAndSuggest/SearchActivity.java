@@ -176,16 +176,13 @@ public class SearchActivity extends AppCompatActivity {
         file = new File(path + "/temp/ICFile.ics");
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         file.delete();
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setTitle("ICFile");
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "temp/ICFile.ics");
-        downloadManager.enqueue(request);
+        DownloadManager.Request downloadRequest = new DownloadManager.Request(uri);
+        downloadRequest.setTitle("ICFile");
+        downloadRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+        downloadRequest.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "temp/ICFile.ics");
+        downloadManager.enqueue(downloadRequest);
     }
 
-    /**
-     * lista som består av alternativen
-     */
     private void findViews() {
         searchText = findViewById(R.id.searchHint);
         listOfSuggestions = findViewById(R.id.suggestions);
@@ -199,7 +196,7 @@ public class SearchActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
             }
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                queueUpdate(100);
+                queueUpdate(400);
             }
             public void afterTextChanged(Editable s) {
             }
@@ -221,11 +218,10 @@ public class SearchActivity extends AppCompatActivity {
      */
     private void goToSchedule(String suggestFieldItem) {
         Intent intent = new Intent(SearchActivity.this, LoadingScreen.class);
-        int counter = 0;
         for(int z = 0; z < suggestFieldItem.length(); z++) {
-            if(suggestFieldItem.charAt(z) == ':' && counter != 1) {
+            if(suggestFieldItem.charAt(z) == ':') {
                 searchCode = suggestFieldItem.substring(0, z);
-                counter++;
+                break;
             }
         }
         downloadSchedule();
@@ -252,7 +248,7 @@ public class SearchActivity extends AppCompatActivity {
             public void run() {
                 String searchFieldText = searchText.getText().toString().trim();
 
-                if (searchFieldText.length() != 0) {
+                if (searchFieldText.length() > 0) {
                     SearchSuggestions suggestTask = new SearchSuggestions(SearchActivity.this, searchFieldText);
                     suggestionThreading.submit(suggestTask);
                 }

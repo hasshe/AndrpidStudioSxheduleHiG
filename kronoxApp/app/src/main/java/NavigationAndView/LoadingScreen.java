@@ -34,11 +34,11 @@ public class LoadingScreen extends AppCompatActivity {
     }
 
     /**
-     * Ny instans av intent som kör igång ScheduleActivity
+     * Ny instans av intent som kör igång ScheduleActivity samt avslutar laddningen
      */
     public void showSchedule() {
         Intent intent = new Intent(LoadingScreen.this, ScheduleActivity.class);
         startActivity(intent);
-        this.finish();
+        finish();
     }
 }

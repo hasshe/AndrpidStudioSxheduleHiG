@@ -140,44 +140,38 @@ public class SearchSuggestions implements Runnable {
 
     /**
      *
-     * @param courseName kursens namn i HTML format
+     * @param courseName kursens namn från HTML format
      * @return kursens namn
      */
     public String courseName(String courseName) {
         courseName = Html.fromHtml(courseName).toString();
         String[] courseNameHTMLData = courseName.split(",");
-        if(courseNameHTMLData.length > 1) {
-            return courseNameHTMLData[1].trim();
-        } else {
-            return courseName;
-        }
+
+        return courseNameHTMLData[1].trim();
+
     }
     /**
      *
-     * @param programName programmets namn i HTML format
+     * @param programName programmets namn från HTML format
      * @return programmets namn
      */
     public String programName(String programName) {
         programName = Html.fromHtml(programName).toString();
         String[] programNameHTMLData = programName.split(",");
-        if(programNameHTMLData.length > 1) {
-            return programNameHTMLData[1].trim();
-        } else {
-            return programName;
-        }
+
+        return programNameHTMLData[1].trim();
+
     }
     /**
      *
-     * @param teacherName lektorns namn i HTML format
+     * @param teacherName lektorns namn från HTML format
      * @return lektorns namn
      */
     public String teacherName(String teacherName) {
         teacherName = Html.fromHtml(teacherName).toString();
         String[] teacherNameHTMLData = teacherName.split(",");
-        if(teacherNameHTMLData.length > 1) {
-            return teacherNameHTMLData[1].trim();
-        } else {
-            return teacherName;
-        }
+
+        return teacherNameHTMLData[1].trim();
+
     }
 }

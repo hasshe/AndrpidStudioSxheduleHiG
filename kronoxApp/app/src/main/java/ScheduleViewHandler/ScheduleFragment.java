@@ -8,11 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.barankazan.kronoxapp.R;
 
 import java.util.ArrayList;
 
+import NavigationAndView.ScheduleActivity;
 import ParserAndModel.ICalDataParser;
 import ParserAndModel.ScheduleInfo;
 
@@ -21,11 +23,11 @@ import ParserAndModel.ScheduleInfo;
  */
 public class ScheduleFragment extends Fragment {
     private ListView scheduleList;
-    private ArrayList<ScheduleInfo> lectures;
+    private ArrayList<ScheduleInfo> scheduleLectures;
     private ListModellingAdapter adapter;
-    private ArrayList<ScheduleInfo> list;
+    private ArrayList<ScheduleInfo> scheduleInfoList;
     private ICalDataParser parser;
-
+    protected ScheduleActivity sa;
     /**
      * Körs när fragment blir framkallad första gången.
      * @param inflater
@@ -38,11 +40,11 @@ public class ScheduleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        initItems();
+        initiations();
         scheduleList = mView.findViewById(R.id.listSchedule);
 
         scheduleList.setAdapter(adapter);
-        getLectures();
+        setLectures();
         adapter.notifyDataSetChanged();
         return mView;
     }
@@ -51,7 +53,7 @@ public class ScheduleFragment extends Fragment {
      * Ändrar hur varje element i listan ser ut och vad som kan finnas i ett element i listan
      */
 
-    class ListModellingAdapter extends BaseAdapter {
+    public class ListModellingAdapter extends BaseAdapter {
         /**
          *
          * @return antalet lektioner
@@ -60,7 +62,7 @@ public class ScheduleFragment extends Fragment {
         @Override
         public int getCount() {
 
-            return lectures.size();
+            return scheduleLectures.size();
         }
 
         @Override
@@ -95,14 +97,14 @@ public class ScheduleFragment extends Fragment {
                 viewHolder = (ViewHolder) view.getTag();
             }
 
-            viewHolder.startTime.setText(lectures.get(position).getStartTime());
-            viewHolder.stopTime.setText(lectures.get(position).getStopTime());
-            viewHolder.courseName.setText(lectures.get(position).getCourseCode());
-            viewHolder.roomNr.setText(lectures.get(position).getRoomNr());
-            viewHolder.teacherSignature.setText(lectures.get(position).getTeacherSignature());
-            viewHolder.teacherSignature.setText(lectures.get(position).getTeacherSignature());
-            viewHolder.moment.setText(lectures.get(position).getLectureDetailedInfo());
-            viewHolder.date.setText(lectures.get(position).getDate());
+            viewHolder.startTime.setText(scheduleLectures.get(position).getStartTime());
+            viewHolder.stopTime.setText(scheduleLectures.get(position).getStopTime());
+            viewHolder.courseName.setText(scheduleLectures.get(position).getCourseCode());
+            viewHolder.roomNr.setText(scheduleLectures.get(position).getRoomNr());
+            viewHolder.teacherSignature.setText(scheduleLectures.get(position).getTeacherSignature());
+            viewHolder.teacherSignature.setText(scheduleLectures.get(position).getTeacherSignature());
+            viewHolder.detailedInfo.setText(scheduleLectures.get(position).getLectureDetailedInfo());
+            viewHolder.date.setText(scheduleLectures.get(position).getDate());
 
             return view;
         }
@@ -112,52 +114,32 @@ public class ScheduleFragment extends Fragment {
      */
     public void setList() {
 
-        list.clear();
-        list.addAll(parser.getScheduleInfoList());
+        scheduleInfoList.clear();
+        scheduleInfoList.addAll(parser.getScheduleInfoList());
     }
     /**
-     * Hämtar de lektioner som finns bokade
+     * Hämtar de lektioner som finns bokade och skickar ut en toast om inget hittas
      */
-    public void getLectures() {
-        lectures.clear();
-        for(ScheduleInfo lectures : list) {
-            this.lectures.add(lectures);
-
+    public void setLectures() {
+        scheduleLectures.clear();
+        for(ScheduleInfo lectures : scheduleInfoList) {
+            scheduleLectures.add(lectures);
+        }
+        if(scheduleLectures.size() < 1) {
+            Toast.makeText(getActivity(), "No Schedule Found", Toast.LENGTH_LONG).show();
         }
     }
     /**
-     * Initierar tolkning av data i parser klassen
+     * Initierar hantering av data, listan med data, lektionerna och adaptern
      */
-    public void initItems() {
+    public void initiations() {
         parser = new ICalDataParser();
         parser.parseICS();
-        initList();
-    }
 
-    /**
-     * initierar en ny arraylist med data från parsern
-     */
-    public void initList() {
-    list = new ArrayList<>();
-
-    setList();
-    initLectures();
-}
-
-    /**
-     * initierar en arraylist av de lektioner som hittades
-     */
-    public void initLectures() {
-
-        lectures = new ArrayList<>();
-        getLectures();
-        initAdapter();
-    }
-
-    /**
-     * initierar modelleringen av listan
-     */
-    public void initAdapter() {
+        scheduleInfoList = new ArrayList<>();
+        setList();
+        scheduleLectures = new ArrayList<>();
+        setLectures();
         adapter = new ListModellingAdapter();
     }
 }
