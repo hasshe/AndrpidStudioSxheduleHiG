@@ -6,7 +6,7 @@ import android.widget.TextView;
 import com.example.barankazan.kronoxapp.R;
 
 /**
- * hanterar vilka views som finns via dess ID
+ * Håller koll på vilka views-objekt som finns via dess ID
  */
 public class ViewHolder {
     TextView startTime, stopTime, courseName, roomNr, teacherSignature, detailedInfo, date;

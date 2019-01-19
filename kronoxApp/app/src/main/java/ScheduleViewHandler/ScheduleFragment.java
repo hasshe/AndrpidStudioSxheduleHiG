@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.barankazan.kronoxapp.R;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ import ParserAndModel.ICalDataParser;
 import ParserAndModel.ScheduleInfo;
 
 /**
- * Fragment som hanterar vad för data läggs till i vilket view-element
+ * Fragment som hanterar vad för data läggs till i vilket view-objekt samt kopplar till en adapter
  */
 public class ScheduleFragment extends Fragment {
     private ListView scheduleList;
@@ -29,6 +30,7 @@ public class ScheduleFragment extends Fragment {
     private ArrayList<ScheduleInfo> scheduleInfoList;
     private ICalDataParser parser;
     protected ScheduleActivity sa;
+    private View mView;
     /**
      * Körs när fragment blir framkallad första gången.
      * @param inflater
@@ -39,11 +41,13 @@ public class ScheduleFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mView = inflater.inflate(R.layout.fragment_schedule, container, false);
+        mView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
         try {
             initiations();
         } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         scheduleList = mView.findViewById(R.id.listSchedule);
@@ -84,13 +88,6 @@ public class ScheduleFragment extends Fragment {
             return 0;
         }
 
-        /**
-         *
-         * @param position var de oliks views ligger
-         * @param view vad som läggs till var i listans element
-         * @param parent vilken lista som ska modelleras
-         * @return data som lagts till i listan
-         */
         @Override
         public View getView(int position, View view, ViewGroup parent) {
             if(view == null) {
@@ -116,7 +113,7 @@ public class ScheduleFragment extends Fragment {
         }
     }
     /**
-     * Hämtar en lista från parsern med data från ICAL filen
+     * Hämtar en lista från parsern med hanterat data från ICAL filen
      */
     public void setList() {
 
@@ -138,7 +135,7 @@ public class ScheduleFragment extends Fragment {
     /**
      * Initierar hantering av data, listan med data, lektionerna och adaptern
      */
-    public void initiations() throws ParseException {
+    public void initiations() throws ParseException, IOException {
         parser = new ICalDataParser();
         parser.parseICS();
 

@@ -32,7 +32,7 @@ import NavigationAndView.LoadingScreen;
 
 /**
  * Denna klass hanterar generering av URL för sökning av ett schema samt det temporära sparandet av
- * schemat för senare tolkning
+ * schema-filen för tolkning
  */
 public class SearchActivity extends AppCompatActivity {
 
@@ -76,10 +76,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     /**
-     *
-     * @param requestCode om tillåtelse finns ( 1 eller 0)
-     * @param permissions vilka tillåtelser finns
-     * @param grantResults resultat av tillåtelserna
+     *Ger tillåtelse till olika kännsliga funktioner
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

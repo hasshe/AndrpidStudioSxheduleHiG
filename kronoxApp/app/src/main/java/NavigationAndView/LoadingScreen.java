@@ -16,7 +16,7 @@ public class LoadingScreen extends AppCompatActivity {
     private Handler handler;
     /**
      * Anropas när ett schema väljs. Laddningsskärmen påbörjar och skapar en delay på 1.5 sekunder
-     * för att tillåta schemat att laddas färdigt
+     * för att tillåta schemat tid att laddas färdigt
      * @param savedInstanceState
      */
     @Override
