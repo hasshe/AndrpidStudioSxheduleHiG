@@ -13,6 +13,7 @@ import com.example.barankazan.kronoxapp.R;
  */
 public class LoadingScreen extends AppCompatActivity {
     private Intent intent;
+    private Handler handler;
     /**
      * Anropas när ett schema väljs. Laddningsskärmen påbörjar och skapar en delay på 1.5 sekunder
      * för att tillåta schemat att laddas färdigt
@@ -22,23 +23,16 @@ public class LoadingScreen extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_screen);
-        Handler handler = new Handler();
+        handler = new Handler();
 
         handler.postDelayed(new Runnable()
         {
             @Override
             public void run() {
-                showSchedule();
+                intent = new Intent(LoadingScreen.this, ScheduleActivity.class);
+                startActivity(intent);
+                finish();
             }
         }, 1500);
-    }
-
-    /**
-     * Ny instans av intent som kör igång ScheduleActivity samt avslutar laddningen
-     */
-    public void showSchedule() {
-        intent = new Intent(LoadingScreen.this, ScheduleActivity.class);
-        startActivity(intent);
-        finish();
     }
 }

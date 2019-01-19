@@ -19,7 +19,7 @@ import java.util.Date;
  */
 public class ICalDataParser {
 
-    protected  ArrayList<ScheduleInfo> scheduleInfo;
+    protected ArrayList<ScheduleInfo> scheduleInfo;
     private String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
     private ScheduleInfo ScheduleInfo;
     private BufferedReader bufferRead;

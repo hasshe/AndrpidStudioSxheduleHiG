@@ -25,7 +25,6 @@ import com.example.barankazan.kronoxapp.R;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -47,7 +46,7 @@ public class SearchActivity extends AppCompatActivity {
     private Intent loadingIntent;
 
     private Uri uri;
-    private List<String> listData;
+    private ArrayList<String> listData;
     private ArrayAdapter<String> adapter;
     private String[] mPermission = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -252,7 +251,7 @@ public class SearchActivity extends AppCompatActivity {
      *
      * @param suggestions lägger till resultat i listan
      */
-    public void setSuggestions(final List<String> suggestions) {
+    public void setSuggestions(final ArrayList<String> suggestions) {
         guiThreadingHandler.post(new Runnable() {
             @Override
             public void run() {

@@ -13,7 +13,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Klass som hanterar sökfältets input via kronox Ajax tjänst
@@ -23,7 +22,7 @@ public class SearchSuggestions implements Runnable {
     private String searchFieldInput;
     private JSONArray jsonArray;
     private ArrayList<JSONObject> jsonObjectArrayList;
-    private List<String> list;
+    private ArrayList<String> list;
     private String bufferLine = "";
     private String bufferData = "";
     private BufferedReader buffer;
@@ -61,7 +60,7 @@ public class SearchSuggestions implements Runnable {
      * @param searchFieldInput data som matades in i sökfältet
      * @return data som hittades som matchar sökfältet
      */
-    private List<String> suggestionsList(String searchFieldInput) throws JSONException, IOException {
+    private ArrayList<String> suggestionsList(String searchFieldInput) throws JSONException, IOException {
         list = null;
         list = new ArrayList<>();
         jsonObjectArrayList = new ArrayList<>();
