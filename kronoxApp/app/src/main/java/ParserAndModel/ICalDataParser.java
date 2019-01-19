@@ -7,7 +7,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -21,11 +25,15 @@ public class ICalDataParser {
     private BufferedReader bufferRead;
     private FileInputStream fileRead;
     private int counter = 0;
+    private SimpleDateFormat sdf;
+    private Date date;
+    private DateFormat df;
+    private String scheduleCalData;
 
     /**
      * ICAL filen sparas temporärt och tolkar det data som anses vara relevant
      */
-    public void parseICS(){
+    public void parseICS() throws ParseException {
         scheduleInfo = new ArrayList<>();
         ScheduleInfo = new ScheduleInfo();
         try {
@@ -33,7 +41,8 @@ public class ICalDataParser {
             InputStreamReader inputStreamRead = new InputStreamReader(fileRead);
             bufferRead = new BufferedReader(inputStreamRead);
 
-            String scheduleCalData;
+            sdf = new SimpleDateFormat("yyyy - mm - dd");
+            df = new SimpleDateFormat("EEEE");
 
             while((scheduleCalData = bufferRead.readLine()) != null) {
                 if(scheduleCalData.contains("DTSTART:")) {
@@ -46,8 +55,9 @@ public class ICalDataParser {
                     lessonDate += ScheduleInfo.getDate();
                     ScheduleInfo.setDate(scheduleCalData.substring(scheduleCalData.lastIndexOf(":")+1).substring(6, 8));
                     lessonDate += ScheduleInfo.getDate();
-
-                    ScheduleInfo.setDate(lessonDate);
+                    date = sdf.parse(lessonDate);
+                    String dayDate = df.format(date);
+                    ScheduleInfo.setDate(dayDate + ":   " + lessonDate);
                 }
                 if(scheduleCalData.contains("DTEND:"))
                     ScheduleInfo.setStop(scheduleCalData.substring(scheduleCalData.lastIndexOf(":") + 1));
@@ -61,7 +71,7 @@ public class ICalDataParser {
                                 ScheduleInfo.setCourseCode(scheduleCalDataHolder[i + 1].substring(0, scheduleCalDataHolder[i + 1].lastIndexOf("-")));
                             case "Sign:":
                                 ScheduleInfo.setTeacherSignature(scheduleCalDataHolder[i + 1]);
-                                if(!scheduleCalDataHolder[i+2].equals("Moment:") && !scheduleCalDataHolder[i+2].equalsIgnoreCase("tentamen"))
+                                if(scheduleCalDataHolder[i+2].equals("Moment:")==false && scheduleCalDataHolder[i+2].equalsIgnoreCase("tentamen")==false)
                                     ScheduleInfo.setSecondTeacherSignature(", " + scheduleCalDataHolder[i+2]);
                                 else
                                     ScheduleInfo.setSecondTeacherSignature("");
@@ -70,19 +80,23 @@ public class ICalDataParser {
                                 for(int index = i+1; index < scheduleCalDataHolder.length; index++) {
                                     if(scheduleCalDataHolder[index].equals("Aktivitetstyp:") == false)
                                         detailedDesc += scheduleCalDataHolder[index] + " ";
-                                    if(scheduleCalDataHolder[index].equals("Aktivitetstyp:"))
-                                        break;
-                                    if(scheduleCalDataHolder[index].equals("Aktivitetstyp:") && detailedDesc.equals("")) {
+                                    if(detailedDesc.trim().length()<2) {
                                         ScheduleInfo.setDetailedInfo("No Info Given...");
                                         counter++;
                                     }
+                                    if(scheduleCalDataHolder[index].equals("Aktivitetstyp:"))
+                                        break;
                                 }
                                 if(counter < 1)
                                     ScheduleInfo.setDetailedInfo(detailedDesc);
                         }
                     }
                 }
-
+                else if(scheduleCalData.contains("SUMMARY:kurs.grp:")) {
+                    ScheduleInfo.setRoomNr("Missing Data: Location");
+                    ScheduleInfo.setCourseCode("Missing Data: Course");
+                    ScheduleInfo.setDetailedInfo("Missing Data: Description");
+                }
                 if(scheduleCalData.contains("LOCATION:")) {
                     ScheduleInfo.setRoomNr(scheduleCalData.substring(scheduleCalData.lastIndexOf(":")+1));
                 }

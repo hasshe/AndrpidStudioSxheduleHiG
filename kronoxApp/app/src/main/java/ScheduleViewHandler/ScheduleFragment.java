@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.barankazan.kronoxapp.R;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import NavigationAndView.ScheduleActivity;
@@ -40,7 +41,11 @@ public class ScheduleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        initiations();
+        try {
+            initiations();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         scheduleList = mView.findViewById(R.id.listSchedule);
 
         scheduleList.setAdapter(adapter);
@@ -53,7 +58,9 @@ public class ScheduleFragment extends Fragment {
      * Ändrar hur varje element i listan ser ut och vad som kan finnas i ett element i listan
      */
 
-    public class ListModellingAdapter extends BaseAdapter {
+    protected class ListModellingAdapter extends BaseAdapter {
+        private LayoutInflater inflater;
+        private ViewHolder viewHolder;
         /**
          *
          * @return antalet lektioner
@@ -86,9 +93,8 @@ public class ScheduleFragment extends Fragment {
          */
         @Override
         public View getView(int position, View view, ViewGroup parent) {
-            ViewHolder viewHolder;
             if(view == null) {
-                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 view = inflater.inflate(R.layout.style_list, parent, false);
                 viewHolder = new ViewHolder(view);
@@ -132,7 +138,7 @@ public class ScheduleFragment extends Fragment {
     /**
      * Initierar hantering av data, listan med data, lektionerna och adaptern
      */
-    public void initiations() {
+    public void initiations() throws ParseException {
         parser = new ICalDataParser();
         parser.parseICS();
 
