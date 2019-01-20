@@ -116,7 +116,6 @@ public class ScheduleFragment extends Fragment {
      * Hämtar en lista från parsern med hanterat data från ICAL filen
      */
     public void setList() {
-
         scheduleInfoList.clear();
         scheduleInfoList.addAll(parser.getScheduleInfoList());
     }

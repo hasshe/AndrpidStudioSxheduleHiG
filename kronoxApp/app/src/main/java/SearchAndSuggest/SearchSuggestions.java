@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -42,7 +41,6 @@ public class SearchSuggestions implements Runnable {
      */
     @Override
     public void run() {
-        list = null;
         try {
             list = suggestionsList(searchFieldInput);
         }
@@ -61,15 +59,13 @@ public class SearchSuggestions implements Runnable {
      * @return data som hittades som matchar sökfältet
      */
     private ArrayList<String> suggestionsList(String searchFieldInput) throws JSONException, IOException {
-        list = null;
         list = new ArrayList<>();
         jsonObjectArrayList = new ArrayList<>();
 
-            String inputDataSearch = URLEncoder.encode(searchFieldInput, "UTF-8");
             if(suggest.toggle == 1) {
                 URL url = new URL(
                         "https://kronox.hig.se/ajax/ajax_autocompleteResurser.jsp?typ=program&term="
-                                + inputDataSearch);
+                                + searchFieldInput);
                 InputStream input = url.openStream();
                 buffer = new BufferedReader(new InputStreamReader(input));
                 bufferLine = "";
@@ -91,7 +87,7 @@ public class SearchSuggestions implements Runnable {
             }else if(suggest.toggle == 2) {
                 URL url = new URL(
                         "https://kronox.hig.se/ajax/ajax_autocompleteResurser.jsp?typ=signatur&term="
-                                + inputDataSearch);
+                                + searchFieldInput);
                 InputStream input = url.openStream();
                 buffer = new BufferedReader(new InputStreamReader(input));
                 bufferLine = "";
@@ -116,7 +112,7 @@ public class SearchSuggestions implements Runnable {
             }else if(suggest.toggle == 3) {
                 URL url = new URL(
                         "https://kronox.hig.se/ajax/ajax_autocompleteResurser.jsp?typ=kurs&term="
-                                + inputDataSearch);
+                                + searchFieldInput);
                 InputStream input = url.openStream();
                 buffer = new BufferedReader(new InputStreamReader(input));
                 bufferLine = "";

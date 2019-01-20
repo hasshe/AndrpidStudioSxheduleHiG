@@ -40,7 +40,6 @@ public class ICalDataParser {
         fileRead = new FileInputStream(new File(path, "/temp/ICFile.ics"));
         inputStreamRead = new InputStreamReader(fileRead);
         bufferRead = new BufferedReader(inputStreamRead);
-
         sdf = new SimpleDateFormat("yyyy - mm - dd");
         df = new SimpleDateFormat("EEEE");
 
