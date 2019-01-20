@@ -25,7 +25,6 @@ import ParserAndModel.ScheduleInfo;
  */
 public class ScheduleFragment extends Fragment {
     private ListView scheduleList;
-    private ArrayList<ScheduleInfo> scheduleLectures;
     private ListModellingAdapter adapter;
     private ArrayList<ScheduleInfo> scheduleInfoList;
     private ICalDataParser parser;
@@ -53,7 +52,7 @@ public class ScheduleFragment extends Fragment {
         scheduleList = mView.findViewById(R.id.listSchedule);
 
         scheduleList.setAdapter(adapter);
-        setLectures();
+        setList();
         adapter.notifyDataSetChanged();
         return mView;
     }
@@ -73,7 +72,7 @@ public class ScheduleFragment extends Fragment {
         @Override
         public int getCount() {
 
-            return scheduleLectures.size();
+            return scheduleInfoList.size();
         }
 
         @Override
@@ -100,14 +99,14 @@ public class ScheduleFragment extends Fragment {
                 viewHolder = (ViewHolder) view.getTag();
             }
 
-            viewHolder.startTime.setText(scheduleLectures.get(position).getStartTime());
-            viewHolder.stopTime.setText(scheduleLectures.get(position).getStopTime());
-            viewHolder.courseName.setText(scheduleLectures.get(position).getCourseCode());
-            viewHolder.roomNr.setText(scheduleLectures.get(position).getRoomNr());
-            viewHolder.teacherSignature.setText(scheduleLectures.get(position).getTeacherSignature());
-            viewHolder.teacherSignature.setText(scheduleLectures.get(position).getTeacherSignature());
-            viewHolder.detailedInfo.setText(scheduleLectures.get(position).getLectureDetailedInfo());
-            viewHolder.date.setText(scheduleLectures.get(position).getDate());
+            viewHolder.startTime.setText(scheduleInfoList.get(position).getStartTime());
+            viewHolder.stopTime.setText(scheduleInfoList.get(position).getStopTime());
+            viewHolder.courseName.setText(scheduleInfoList.get(position).getCourseCode());
+            viewHolder.roomNr.setText(scheduleInfoList.get(position).getRoomNr());
+            viewHolder.teacherSignature.setText(scheduleInfoList.get(position).getTeacherSignature());
+            viewHolder.teacherSignature.setText(scheduleInfoList.get(position).getTeacherSignature());
+            viewHolder.detailedInfo.setText(scheduleInfoList.get(position).getLectureDetailedInfo());
+            viewHolder.date.setText(scheduleInfoList.get(position).getDate());
 
             return view;
         }
@@ -118,16 +117,7 @@ public class ScheduleFragment extends Fragment {
     public void setList() {
         scheduleInfoList.clear();
         scheduleInfoList.addAll(parser.getScheduleInfoList());
-    }
-    /**
-     * Hämtar de lektioner som finns bokade och skickar ut en toast om inget hittas
-     */
-    public void setLectures() {
-        scheduleLectures.clear();
-        for(ScheduleInfo lectures : scheduleInfoList) {
-            scheduleLectures.add(lectures);
-        }
-        if(scheduleLectures.size() < 1) {
+        if(scheduleInfoList.size() < 1) {
             Toast.makeText(getActivity(), "No Schedule Found", Toast.LENGTH_LONG).show();
         }
     }
@@ -140,8 +130,6 @@ public class ScheduleFragment extends Fragment {
 
         scheduleInfoList = new ArrayList<>();
         setList();
-        scheduleLectures = new ArrayList<>();
-        setLectures();
         adapter = new ListModellingAdapter();
     }
 }

@@ -20,7 +20,7 @@ import java.util.Date;
 public class ICalDataParser {
 
     protected ArrayList<ScheduleInfo> infoArray;
-    private String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+    private String path;
     private ScheduleInfo ScheduleInfo;
     private BufferedReader bufferRead;
     private FileInputStream fileRead;
@@ -35,6 +35,7 @@ public class ICalDataParser {
      * ICAL filen sparas temporärt och tolkar det data som anses vara relevant
      */
     public void parseICS() throws ParseException, IOException {
+        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
         infoArray = new ArrayList<>();
         ScheduleInfo = new ScheduleInfo();
         fileRead = new FileInputStream(new File(path, "/temp/ICFile.ics"));
