@@ -19,7 +19,7 @@ import java.util.Date;
  */
 public class ICalDataParser {
 
-    protected ArrayList<ScheduleInfo> scheduleInfo;
+    protected ArrayList<ScheduleInfo> infoArray;
     private String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
     private ScheduleInfo ScheduleInfo;
     private BufferedReader bufferRead;
@@ -35,7 +35,7 @@ public class ICalDataParser {
      * ICAL filen sparas temporärt och tolkar det data som anses vara relevant
      */
     public void parseICS() throws ParseException, IOException {
-        scheduleInfo = new ArrayList<>();
+        infoArray = new ArrayList<>();
         ScheduleInfo = new ScheduleInfo();
         fileRead = new FileInputStream(new File(path, "/temp/ICFile.ics"));
         inputStreamRead = new InputStreamReader(fileRead);
@@ -105,7 +105,7 @@ public class ICalDataParser {
                 }
 
                 if(scheduleCalData.equals("END:VEVENT")) {
-                    scheduleInfo.add(ScheduleInfo);
+                    infoArray.add(ScheduleInfo);
                     ScheduleInfo = new ScheduleInfo();
                 }
             }
@@ -117,7 +117,7 @@ public class ICalDataParser {
      */
     public ArrayList<ScheduleInfo> getScheduleInfoList(){
 
-        return scheduleInfo;
+        return infoArray;
     }
 }
 

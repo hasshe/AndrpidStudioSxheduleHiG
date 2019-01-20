@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -74,46 +73,16 @@ public class SearchActivity extends AppCompatActivity {
         setListeners();
         setAdapters();
     }
-
-    /**
-     *Ger tillåtelse till olika kännsliga funktioner
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1) {
-            if (grantResults.length == 4 &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[1] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[2] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[3] == PackageManager.PERMISSION_GRANTED) {
-            } else {
-
-            }
-        }
     }
 
     /**
      * Hanterar tillåtelser
      */
     private void requestPermissions() {
-            if (ActivityCompat.checkSelfPermission(this, mPermission[0])
-                    != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this, mPermission[1])
-                            != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this, mPermission[2])
-                            != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this, mPermission[3])
-                            != PackageManager.PERMISSION_GRANTED) {
-
-                ActivityCompat.requestPermissions(this,
-                        mPermission, 1);
-            } else {
-
-        }
+        ActivityCompat.requestPermissions(this, mPermission, 1);
     }
 
     /**
@@ -168,14 +137,22 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     /**
-     * Temporärt laddar ned det valda schemat för tolkning
+     * Skapar den temporära vägen för den nedladdade .ics filen
      */
-    public void downloadSchedule() {
+    public void createTempPath() {
         path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
         uri = Uri.parse(generateURL());
         file = new File(path + "/temp/ICFile.ics");
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         file.delete();
+        download(uri);
+    }
+
+    /**
+     * Laddar ned .ics filen
+     * @param uri uri med den genererade URL:en
+     */
+    public void download(Uri uri) {
         DownloadManager.Request downloadRequest = new DownloadManager.Request(uri);
         downloadRequest.setTitle("ICFile");
         downloadRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
@@ -210,7 +187,7 @@ public class SearchActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                downloadSchedule();
+                createTempPath();
                 startActivity(loadingIntent);
             }
         };

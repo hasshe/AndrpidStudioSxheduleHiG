@@ -91,7 +91,7 @@ public class ScheduleFragment extends Fragment {
         @Override
         public View getView(int position, View view, ViewGroup parent) {
             if(view == null) {
-                inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 view = inflater.inflate(R.layout.style_list, parent, false);
                 viewHolder = new ViewHolder(view);
