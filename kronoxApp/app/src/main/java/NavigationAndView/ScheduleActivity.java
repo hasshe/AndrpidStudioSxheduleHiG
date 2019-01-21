@@ -1,7 +1,7 @@
 package NavigationAndView;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.barankazan.kronoxapp.R;
@@ -9,7 +9,7 @@ import com.example.barankazan.kronoxapp.R;
 /**
  * Aktivitet som endast består av schemats utseende
  */
-public class ScheduleActivity extends Activity {
+public class ScheduleActivity extends AppCompatActivity {
 
     /**
      * Körs när activity blir andropad

@@ -23,7 +23,7 @@
         <activity
             android:name="NavigationAndView.ScheduleActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ApDef"></activity>
+            android:theme="@style/ApDef.NoActionBar"></activity>
         <activity
             android:name="NavigationAndView.LoadingScreen"
             android:screenOrientation="portrait"
