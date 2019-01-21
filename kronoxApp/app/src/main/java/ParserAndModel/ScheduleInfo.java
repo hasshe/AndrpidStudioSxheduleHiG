@@ -133,7 +133,7 @@ public class ScheduleInfo {
      */
     public String getTeacherSignature() {
 
-        return this.teacherSignature + " " + this.secondTeacherSignature;
+        return this.teacherSignature + "" + this.secondTeacherSignature;
     }
     /**
      *

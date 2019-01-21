@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,7 +24,6 @@ import com.example.barankazan.kronoxapp.R;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,7 +31,7 @@ import NavigationAndView.LoadingScreen;
 
 /**
  * Denna klass hanterar generering av URL för sökning av ett schema samt det temporära sparandet av
- * schemat för senare tolkning
+ * schema-filen för tolkning
  */
 public class SearchActivity extends AppCompatActivity {
 
@@ -43,9 +41,11 @@ public class SearchActivity extends AppCompatActivity {
     private ExecutorService suggestionThreading;
     private Runnable updater;
     private DownloadManager downloadManager;
+    private SearchSuggestions suggestTask;
+    private Intent loadingIntent;
 
     private Uri uri;
-    private List<String> listData;
+    private ArrayList<String> listData;
     private ArrayAdapter<String> adapter;
     private String[] mPermission = {Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -70,50 +70,19 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         initiateThread();
-        findViews();
         setListeners();
         setAdapters();
     }
-
-    /**
-     *
-     * @param requestCode om tillåtelse finns ( 1 eller 0)
-     * @param permissions vilka tillåtelser finns
-     * @param grantResults resultat av tillåtelserna
-     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1) {
-            if (grantResults.length == 4 &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[1] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[2] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[3] == PackageManager.PERMISSION_GRANTED) {
-            } else {
-
-            }
-        }
     }
 
     /**
      * Hanterar tillåtelser
      */
     private void requestPermissions() {
-            if (ActivityCompat.checkSelfPermission(this, mPermission[0])
-                    != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this, mPermission[1])
-                            != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this, mPermission[2])
-                            != PackageManager.PERMISSION_GRANTED ||
-                    ActivityCompat.checkSelfPermission(this, mPermission[3])
-                            != PackageManager.PERMISSION_GRANTED) {
-
-                ActivityCompat.requestPermissions(this,
-                        mPermission, 1);
-            } else {
-
-        }
+        ActivityCompat.requestPermissions(this, mPermission, 1);
     }
 
     /**
@@ -168,38 +137,39 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     /**
-     * Temporärt laddar ned det valda schemat för tolkning
+     * Skapar den temporära vägen för den nedladdade .ics filen
      */
-    public void downloadSchedule() {
+    public void createTempPath() {
         path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
         uri = Uri.parse(generateURL());
         file = new File(path + "/temp/ICFile.ics");
         downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         file.delete();
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setTitle("ICFile");
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "temp/ICFile.ics");
-        downloadManager.enqueue(request);
+        download(uri);
     }
 
     /**
-     * lista som består av alternativen
+     * Laddar ned .ics filen
+     * @param uri uri med den genererade URL:en
      */
-    private void findViews() {
-        searchText = findViewById(R.id.searchHint);
-        listOfSuggestions = findViewById(R.id.suggestions);
+    public void download(Uri uri) {
+        DownloadManager.Request downloadRequest = new DownloadManager.Request(uri);
+        downloadRequest.setTitle("ICFile");
+        downloadRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+        downloadRequest.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "temp/ICFile.ics");
+        downloadManager.enqueue(downloadRequest);
     }
 
+
     /**
-     * Reagerar på ändringar i sökfältet. Uppdateringen sker varje sekund vid ändring av textfältet
+     * Reagerar på ändringar i sökfältet. Uppdateringen sker varje 400ms vid ändring av textfältet
      */
     private void setListeners() {
         TextWatcher textWatcher = new TextWatcher() {
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
             }
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                queueUpdate(100);
+                guiThreadingHandler.postDelayed(updater,400);
             }
             public void afterTextChanged(Editable s) {
             }
@@ -210,28 +180,19 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String suggestFieldItem = (String) parent.getItemAtPosition(position);
-                goToSchedule(suggestFieldItem);
+                loadingIntent = new Intent(SearchActivity.this, LoadingScreen.class);
+                for(int z = 0; z < suggestFieldItem.length(); z++) {
+                    if(suggestFieldItem.charAt(z) == ':') {
+                        searchCode = suggestFieldItem.substring(0, z);
+                        break;
+                    }
+                }
+                createTempPath();
+                startActivity(loadingIntent);
             }
         };
         listOfSuggestions.setOnItemClickListener(clickListener);
     }
-    /**
-     *Parsar data från det valda data från sökfältets resultat för att få fram koden till kurs/lärare/program
-     * @param suggestFieldItem valda data från resultatet av sökningen
-     */
-    private void goToSchedule(String suggestFieldItem) {
-        Intent intent = new Intent(SearchActivity.this, LoadingScreen.class);
-        int counter = 0;
-        for(int z = 0; z < suggestFieldItem.length(); z++) {
-            if(suggestFieldItem.charAt(z) == ':' && counter != 1) {
-                searchCode = suggestFieldItem.substring(0, z);
-                counter++;
-            }
-        }
-        downloadSchedule();
-        startActivity(intent);
-    }
-
     /**
      * Lägger till adapters till listorna
      */
@@ -248,43 +209,32 @@ public class SearchActivity extends AppCompatActivity {
         guiThreadingHandler = new Handler();
         suggestionThreading = Executors.newSingleThreadExecutor();
 
+        searchText = findViewById(R.id.searchHint);
+        listOfSuggestions = findViewById(R.id.suggestions);
+
         updater = new Runnable() {
+            @Override
             public void run() {
                 String searchFieldText = searchText.getText().toString().trim();
 
-                if (searchFieldText.length() != 0) {
-                    SearchSuggestions suggestTask = new SearchSuggestions(SearchActivity.this, searchFieldText);
+                if (searchFieldText.length() > 0) {
+                    suggestTask = new SearchSuggestions(SearchActivity.this, searchFieldText);
                     suggestionThreading.submit(suggestTask);
                 }
             }
         };
     }
-
     /**
      *
-     * @param delay tid i millisekunder för att skapa en delay som tillåter applikationen att utföra färdigt exekveringar
+     * @param suggestions lägger till resultat i listan
      */
-    private void queueUpdate(int delay) {
-        guiThreadingHandler.postDelayed(updater, delay);
-    }
-
-    /**
-     *
-     * @param suggestions lägger till resultat i listan som skrivs ut i applikationen
-     */
-    public void setSuggestions(final List<String> suggestions) {
+    public void setSuggestions(final ArrayList<String> suggestions) {
         guiThreadingHandler.post(new Runnable() {
+            @Override
             public void run() {
-                setList(suggestions);
+                adapter.clear();
+                adapter.addAll(suggestions);
             }
         });
-    }
-    /**
-     *
-     * @param list lägger till data till listan
-     */
-    private void setList(List<String> list) {
-        adapter.clear();
-        adapter.addAll(list);
     }
 }

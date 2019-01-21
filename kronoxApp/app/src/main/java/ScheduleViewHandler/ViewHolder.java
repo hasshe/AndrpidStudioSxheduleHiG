@@ -6,10 +6,10 @@ import android.widget.TextView;
 import com.example.barankazan.kronoxapp.R;
 
 /**
- * hanterar vilka views som finns via dess ID
+ * Håller koll på vilka views-objekt som finns via dess ID
  */
 public class ViewHolder {
-    TextView startTime, stopTime, courseName, roomNr, teacherSignature, moment, date;
+    TextView startTime, stopTime, courseName, roomNr, teacherSignature, detailedInfo, date;
 
     public ViewHolder(View view) {
         startTime =  view.findViewById(R.id.start);
@@ -17,7 +17,7 @@ public class ViewHolder {
         courseName =  view.findViewById(R.id.courseName);
         roomNr =  view.findViewById(R.id.room);
         teacherSignature =  view.findViewById(R.id.teacher);
-        moment = view.findViewById(R.id.detailData);
+        detailedInfo = view.findViewById(R.id.detailData);
         date = view.findViewById(R.id.dateField);
     }
 }

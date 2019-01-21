@@ -8,24 +8,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.barankazan.kronoxapp.R;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 
+import NavigationAndView.ScheduleActivity;
 import ParserAndModel.ICalDataParser;
 import ParserAndModel.ScheduleInfo;
 
 /**
- * Fragment som hanterar vad för data läggs till i vilket view-element
+ * Fragment som hanterar vad för data läggs till i vilket view-objekt samt kopplar till en adapter
  */
 public class ScheduleFragment extends Fragment {
     private ListView scheduleList;
-    private ArrayList<ScheduleInfo> lectures;
     private ListModellingAdapter adapter;
-    private ArrayList<ScheduleInfo> list;
+    private ArrayList<ScheduleInfo> scheduleInfoList;
     private ICalDataParser parser;
-
+    protected ScheduleActivity sa;
+    private View mView;
     /**
      * Körs när fragment blir framkallad första gången.
      * @param inflater
@@ -36,13 +40,19 @@ public class ScheduleFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mView = inflater.inflate(R.layout.fragment_schedule, container, false);
+        mView = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        initItems();
+        try {
+            initiations();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         scheduleList = mView.findViewById(R.id.listSchedule);
 
         scheduleList.setAdapter(adapter);
-        getLectures();
+        setList();
         adapter.notifyDataSetChanged();
         return mView;
     }
@@ -51,7 +61,9 @@ public class ScheduleFragment extends Fragment {
      * Ändrar hur varje element i listan ser ut och vad som kan finnas i ett element i listan
      */
 
-    class ListModellingAdapter extends BaseAdapter {
+    protected class ListModellingAdapter extends BaseAdapter {
+        private LayoutInflater inflater;
+        private ViewHolder viewHolder;
         /**
          *
          * @return antalet lektioner
@@ -60,7 +72,7 @@ public class ScheduleFragment extends Fragment {
         @Override
         public int getCount() {
 
-            return lectures.size();
+            return scheduleInfoList.size();
         }
 
         @Override
@@ -75,18 +87,10 @@ public class ScheduleFragment extends Fragment {
             return 0;
         }
 
-        /**
-         *
-         * @param position var de oliks views ligger
-         * @param view vad som läggs till var i listans element
-         * @param parent vilken lista som ska modelleras
-         * @return data som lagts till i listan
-         */
         @Override
         public View getView(int position, View view, ViewGroup parent) {
-            ViewHolder viewHolder;
             if(view == null) {
-                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 view = inflater.inflate(R.layout.style_list, parent, false);
                 viewHolder = new ViewHolder(view);
@@ -95,69 +99,37 @@ public class ScheduleFragment extends Fragment {
                 viewHolder = (ViewHolder) view.getTag();
             }
 
-            viewHolder.startTime.setText(lectures.get(position).getStartTime());
-            viewHolder.stopTime.setText(lectures.get(position).getStopTime());
-            viewHolder.courseName.setText(lectures.get(position).getCourseCode());
-            viewHolder.roomNr.setText(lectures.get(position).getRoomNr());
-            viewHolder.teacherSignature.setText(lectures.get(position).getTeacherSignature());
-            viewHolder.teacherSignature.setText(lectures.get(position).getTeacherSignature());
-            viewHolder.moment.setText(lectures.get(position).getLectureDetailedInfo());
-            viewHolder.date.setText(lectures.get(position).getDate());
+            viewHolder.startTime.setText(scheduleInfoList.get(position).getStartTime());
+            viewHolder.stopTime.setText(scheduleInfoList.get(position).getStopTime());
+            viewHolder.courseName.setText(scheduleInfoList.get(position).getCourseCode());
+            viewHolder.roomNr.setText(scheduleInfoList.get(position).getRoomNr());
+            viewHolder.teacherSignature.setText(scheduleInfoList.get(position).getTeacherSignature());
+            viewHolder.teacherSignature.setText(scheduleInfoList.get(position).getTeacherSignature());
+            viewHolder.detailedInfo.setText(scheduleInfoList.get(position).getLectureDetailedInfo());
+            viewHolder.date.setText(scheduleInfoList.get(position).getDate());
 
             return view;
         }
     }
     /**
-     * Hämtar en lista från parsern med data från ICAL filen
+     * Hämtar en lista från parsern med hanterat data från ICAL filen
      */
     public void setList() {
-
-        list.clear();
-        list.addAll(parser.getScheduleInfoList());
-    }
-    /**
-     * Hämtar de lektioner som finns bokade
-     */
-    public void getLectures() {
-        lectures.clear();
-        for(ScheduleInfo lectures : list) {
-            this.lectures.add(lectures);
-
+        scheduleInfoList.clear();
+        scheduleInfoList.addAll(parser.getScheduleInfoList());
+        if(scheduleInfoList.size() < 1) {
+            Toast.makeText(getActivity(), "No Schedule Found", Toast.LENGTH_LONG).show();
         }
     }
     /**
-     * Initierar tolkning av data i parser klassen
+     * Initierar hantering av data, listan med data, lektionerna och adaptern
      */
-    public void initItems() {
+    public void initiations() throws ParseException, IOException {
         parser = new ICalDataParser();
         parser.parseICS();
-        initList();
-    }
 
-    /**
-     * initierar en ny arraylist med data från parsern
-     */
-    public void initList() {
-    list = new ArrayList<>();
-
-    setList();
-    initLectures();
-}
-
-    /**
-     * initierar en arraylist av de lektioner som hittades
-     */
-    public void initLectures() {
-
-        lectures = new ArrayList<>();
-        getLectures();
-        initAdapter();
-    }
-
-    /**
-     * initierar modelleringen av listan
-     */
-    public void initAdapter() {
+        scheduleInfoList = new ArrayList<>();
+        setList();
         adapter = new ListModellingAdapter();
     }
 }
